@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-import { CheckCircle, XCircle } from "lucide-react";
+import { CheckCircle, XCircle, AlertTriangle } from "lucide-react";
 import { QuranDialog } from "./QuranDialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface StatusCardProps {
   username: string;
@@ -22,10 +32,28 @@ export const StatusCard = ({
   const [showQuranDialog, setShowQuranDialog] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<"gooned" | "failed" | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showWarning, setShowWarning] = useState(false);
+  const [pendingStatus, setPendingStatus] = useState<"gooned" | "failed" | null>(null);
+
+  // Check if warning has been shown before
+  const hasSeenWarning = localStorage.getItem('akhcheck-warning-seen') === 'true';
+  const repeatWarnings = localStorage.getItem('akhcheck-repeat-warnings') === 'true';
 
   const handleStatusClick = (status: "gooned" | "failed") => {
     if (!isOwnProfile) return;
     
+    // Show warning for "gooned" status if not seen before or if repeat warnings is enabled
+    if (status === "gooned" && (!hasSeenWarning || repeatWarnings)) {
+      setPendingStatus(status);
+      setShowWarning(true);
+      return;
+    }
+    
+    // Proceed with status update
+    proceedWithStatusUpdate(status);
+  };
+
+  const proceedWithStatusUpdate = (status: "gooned" | "failed") => {
     setSelectedStatus(status);
     setShowQuranDialog(true);
     onStatusUpdate(status);
@@ -33,6 +61,22 @@ export const StatusCard = ({
     // Trigger animation
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 600);
+  };
+
+  const handleWarningProceed = () => {
+    // Mark warning as seen
+    localStorage.setItem('akhcheck-warning-seen', 'true');
+    
+    setShowWarning(false);
+    if (pendingStatus) {
+      proceedWithStatusUpdate(pendingStatus);
+      setPendingStatus(null);
+    }
+  };
+
+  const handleWarningCancel = () => {
+    setShowWarning(false);
+    setPendingStatus(null);
   };
 
   const getStatusIcon = () => {
@@ -95,6 +139,34 @@ export const StatusCard = ({
         onOpenChange={setShowQuranDialog}
         status={selectedStatus}
       />
+
+      {/* Warning Dialog */}
+      <AlertDialog open={showWarning} onOpenChange={setShowWarning}>
+        <AlertDialogContent className="glass-card border-warning/20">
+          <AlertDialogHeader>
+            <div className="flex items-center space-x-2">
+              <AlertTriangle className="w-6 h-6 text-warning" />
+              <AlertDialogTitle className="text-foreground">Let op, Akhi.</AlertDialogTitle>
+            </div>
+            <AlertDialogDescription className="text-muted-foreground text-left space-y-3">
+              <p>Wat je hier deelt, is zichtbaar voor je vrienden. Deel geen zonden. De Profeet ﷺ zei:</p>
+              <p className="italic bg-accent/20 p-3 rounded-lg border-l-4 border-warning">
+                "Iedereen uit mijn ummah zal worden vergeven, behalve degenen die hun zonden openlijk bekennen."
+              </p>
+              <p className="text-xs text-muted-foreground">— Sahih al-Bukhari, 6069</p>
+              <p>Deel alleen je struggles als je vertrouwt op de ander – anders: houd het tussen jou en Allah.</p>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter className="flex-col sm:flex-row space-y-2 sm:space-y-0">
+            <AlertDialogCancel onClick={handleWarningCancel}>
+              Annuleren
+            </AlertDialogCancel>
+            <AlertDialogAction onClick={handleWarningProceed} className="bg-warning hover:bg-warning/90 text-warning-foreground">
+              Ik begrijp het, doorgaan
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </>
   );
 };

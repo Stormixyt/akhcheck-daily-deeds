@@ -63,7 +63,25 @@ export const Settings = () => {
               </div>
               <Switch 
                 checked={anonMode}
-                onCheckedChange={setAnonMode}
+                onCheckedChange={(checked) => {
+                  setAnonMode(checked);
+                  localStorage.setItem('akhcheck-anonymous-mode', checked.toString());
+                }}
+              />
+            </div>
+            
+            <Separator />
+            
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-foreground">Repeat Warnings</p>
+                <p className="text-sm text-muted-foreground">Show sin warning every time</p>
+              </div>
+              <Switch 
+                checked={localStorage.getItem('akhcheck-repeat-warnings') === 'true'}
+                onCheckedChange={(checked) => {
+                  localStorage.setItem('akhcheck-repeat-warnings', checked.toString());
+                }}
               />
             </div>
           </div>

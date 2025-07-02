@@ -3,52 +3,76 @@ import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useNavigate } from "react-router-dom";
 
-// Dummy notification data
+// Enhanced notification data with Islamic motivation
 const notifications = [
   {
     id: "1",
     type: "friend_update",
-    message: "Omar heeft vandaag gegooned 💪",
+    message: "Omar heeft vandaag stayed clean 💪",
     time: "2 hours ago",
     icon: CheckCircle,
-    color: "text-success"
+    color: "text-success",
+    unread: true
   },
   {
     id: "2", 
-    type: "streak_broken",
-    message: "Streak gebroken op dag 4 💀",
+    type: "streak_milestone",
+    message: "Je streak is nu 7 dagen! 🔥",
     time: "1 day ago",
-    icon: XCircle,
-    color: "text-destructive"
+    icon: Target,
+    color: "text-warning",
+    unread: true
   },
   {
     id: "3",
-    type: "verse_added",
-    message: "Nieuwe Quran-vers toegevoegd: Geduld",
-    time: "2 days ago",
+    type: "daily_challenge",
+    message: "Vandaag's uitdaging: Bid op tijd ⏰",
+    time: "1 day ago",
     icon: Bell,
-    color: "text-primary"
+    color: "text-primary",
+    unread: true
   },
   {
     id: "4",
     type: "friend_boost",
-    message: "Ahmed heeft je een boost gestuurd",
-    time: "3 days ago",
+    message: "Ahmed heeft je een boost gestuurd: 'Stay strong, akhi!'",
+    time: "2 days ago",
     icon: Target,
-    color: "text-warning"
+    color: "text-warning",
+    unread: false
   },
   {
     id: "5",
+    type: "verse_reminder",
+    message: "Nieuwe verse: 'Don't expose your sins' - Sahih al-Bukhari",
+    time: "3 days ago",
+    icon: Bell,
+    color: "text-primary",
+    unread: false
+  },
+  {
+    id: "6",
     type: "goal_completed",
-    message: "Dagelijkse doelen voltooid! 🎯",
+    message: "Dagelijkse doelen voltooid! Alle 5 gebeden gedaan 🤲",
     time: "4 days ago",
     icon: CheckCircle,
-    color: "text-success"
+    color: "text-success",
+    unread: false
+  },
+  {
+    id: "7",
+    type: "motivation",
+    message: "Reminder: 'Discipline beats motivation elke dag'",
+    time: "5 days ago",
+    icon: Target,
+    color: "text-warning",
+    unread: false
   }
 ];
 
 export const Notifications = () => {
   const navigate = useNavigate();
+  const unreadCount = notifications.filter(n => n.unread).length;
 
   return (
     <div className="min-h-screen bg-background">
@@ -77,7 +101,7 @@ export const Notifications = () => {
               <p className="text-sm text-muted-foreground">Total notifications</p>
             </div>
             <div className="text-right">
-              <p className="text-lg font-semibold text-primary">3</p>
+              <p className="text-lg font-semibold text-primary">{unreadCount}</p>
               <p className="text-sm text-muted-foreground">Unread</p>
             </div>
           </div>
@@ -116,7 +140,7 @@ export const Notifications = () => {
                     </p>
                   </div>
                   
-                  {index < 3 && (
+                  {notification.unread && (
                     <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
                   )}
                 </div>
