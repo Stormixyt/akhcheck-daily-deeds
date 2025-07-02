@@ -68,45 +68,47 @@ export const Onboarding = () => {
   const IconComponent = currentSlideData.icon;
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md">
-        <GlassCard className="p-8 text-center space-y-6">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-6">
+      <div className="w-full max-w-sm">
+        <div className="bg-card/80 backdrop-blur-xl rounded-3xl p-8 text-center shadow-2xl border border-border/50">
           {/* Progress indicators */}
-          <div className="flex justify-center space-x-2">
+          <div className="flex justify-center space-x-2 mb-8">
             {onboardingSlides.map((_, index) => (
               <div
                 key={index}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  index <= currentSlide ? "bg-primary" : "bg-muted"
+                className={`h-1.5 rounded-full transition-all duration-300 ${
+                  index <= currentSlide 
+                    ? "bg-primary w-6" 
+                    : "bg-muted w-1.5"
                 }`}
               />
             ))}
           </div>
 
           {/* Icon */}
-          <div className="flex justify-center">
-            <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center">
-              <IconComponent className="w-8 h-8 text-primary" />
+          <div className="flex justify-center mb-6">
+            <div className="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center">
+              <IconComponent className="w-10 h-10 text-primary" />
             </div>
           </div>
 
           {/* Content */}
-          <div className="space-y-4">
-            <h2 className="text-2xl font-bold text-foreground">
+          <div className="space-y-6 mb-8">
+            <h2 className="text-2xl font-bold text-foreground leading-tight">
               {currentSlideData.title}
             </h2>
             
-            <p className="text-muted-foreground leading-relaxed">
+            <p className="text-muted-foreground leading-relaxed text-base">
               {currentSlideData.content}
             </p>
 
             {currentSlideData.warning && (
-              <div className="bg-amber-500/10 border border-amber-500/20 rounded-lg p-4 space-y-2">
-                <p className="text-amber-600 dark:text-amber-400 text-sm font-medium">
+              <div className="bg-warning/10 border border-warning/20 rounded-2xl p-4 space-y-3">
+                <p className="text-warning-foreground text-sm font-medium">
                   {currentSlideData.warning}
                 </p>
                 {currentSlideData.hadith && (
-                  <p className="text-xs text-muted-foreground italic">
+                  <p className="text-xs text-muted-foreground italic leading-relaxed">
                     {currentSlideData.hadith}
                   </p>
                 )}
@@ -117,27 +119,41 @@ export const Onboarding = () => {
           {/* Actions */}
           <div className="space-y-3">
             {currentSlideData.hasAction ? (
-              <div className="space-y-2">
-                <Button onClick={handleAddFriend} className="w-full">
+              <div className="space-y-3">
+                <Button 
+                  onClick={handleAddFriend} 
+                  className="w-full h-12 rounded-2xl text-base font-semibold"
+                >
                   Vriend toevoegen
                 </Button>
-                <Button onClick={handleNext} variant="outline" className="w-full">
+                <Button 
+                  onClick={handleNext} 
+                  variant="outline" 
+                  className="w-full h-12 rounded-2xl border-2 bg-card/50 backdrop-blur-sm text-base font-medium"
+                >
                   Ik begrijp het
                 </Button>
               </div>
             ) : currentSlideData.isLast ? (
-              <Button onClick={handleComplete} className="w-full" size="lg">
+              <Button 
+                onClick={handleComplete} 
+                className="w-full h-14 rounded-2xl text-base font-semibold shadow-lg"
+                size="lg"
+              >
                 Enter the App
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             ) : (
-              <Button onClick={handleNext} className="w-full">
+              <Button 
+                onClick={handleNext} 
+                className="w-full h-12 rounded-2xl text-base font-semibold"
+              >
                 Next
-                <ArrowRight className="w-4 h-4 ml-2" />
+                <ArrowRight className="w-5 h-5 ml-2" />
               </Button>
             )}
           </div>
-        </GlassCard>
+        </div>
       </div>
     </div>
   );

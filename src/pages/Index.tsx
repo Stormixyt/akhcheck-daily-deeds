@@ -85,10 +85,10 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted">
       <Header username={profile?.display_name || "Abdullah"} />
       
-      <main className="max-w-md mx-auto p-4 space-y-6">
+      <main className="max-w-sm mx-auto p-6 space-y-6">
         {/* Daily motivation carousel */}
         <MotivationalCarousel />
 
@@ -108,11 +108,11 @@ const Index = () => {
         <FriendsList friends={dummyFriends} />
 
         {/* Daily reminder */}
-        <div className="text-center p-4 glass-card rounded-lg">
-          <p className="text-sm text-muted-foreground">
+        <div className="text-center p-5 bg-card/80 backdrop-blur-xl rounded-3xl border border-border/50 shadow-lg">
+          <p className="text-sm text-muted-foreground leading-relaxed">
             "And whoever fears Allah - He will make for him a way out."
           </p>
-          <p className="text-xs text-primary mt-1">— Quran 65:2</p>
+          <p className="text-xs text-primary mt-2 font-medium">— Quran 65:2</p>
         </div>
       </main>
     </div>
