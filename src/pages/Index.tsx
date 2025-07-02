@@ -85,34 +85,47 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted">
+    <div className="min-h-screen animate-fade-in-up">
       <Header username={profile?.display_name || "Abdullah"} />
       
-      <main className="max-w-sm mx-auto p-6 space-y-6">
+      <main className="max-w-sm mx-auto p-6 space-y-8">
         {/* Daily motivation carousel */}
-        <MotivationalCarousel />
+        <div className="animate-scale-in">
+          <MotivationalCarousel />
+        </div>
 
         {/* User's own status */}
-        <StatusCard
-          username="You"
-          streak={userStreak}
-          todayStatus={todayStatus}
-          onStatusUpdate={handleStatusUpdate}
-          isOwnProfile={true}
-        />
+        <div className="animate-slide-in-right" style={{ animationDelay: '0.1s' }}>
+          <StatusCard
+            username="You"
+            streak={userStreak}
+            todayStatus={todayStatus}
+            onStatusUpdate={handleStatusUpdate}
+            isOwnProfile={true}
+          />
+        </div>
 
         {/* Daily challenge */}
-        <DailyChallenge />
+        <div className="animate-slide-in-right" style={{ animationDelay: '0.2s' }}>
+          <DailyChallenge />
+        </div>
 
         {/* Friends list */}
-        <FriendsList friends={dummyFriends} />
+        <div className="animate-slide-in-right" style={{ animationDelay: '0.3s' }}>
+          <FriendsList friends={dummyFriends} />
+        </div>
 
         {/* Daily reminder */}
-        <div className="text-center p-5 bg-card/80 backdrop-blur-xl rounded-3xl border border-border/50 shadow-lg">
-          <p className="text-sm text-muted-foreground leading-relaxed">
+        <div 
+          className="text-center p-6 glass-card rounded-3xl glow-primary hover-lift animate-smooth animate-slide-in-right" 
+          style={{ animationDelay: '0.4s' }}
+        >
+          <p className="text-base text-muted-foreground leading-relaxed mb-3">
             "And whoever fears Allah - He will make for him a way out."
           </p>
-          <p className="text-xs text-primary mt-2 font-medium">— Quran 65:2</p>
+          <p className="text-sm text-primary font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+            — Quran 65:2
+          </p>
         </div>
       </main>
     </div>

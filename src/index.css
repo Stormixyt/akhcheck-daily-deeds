@@ -6,63 +6,68 @@
 
 @layer base {
   :root {
-    /* Dark glassy theme - Islamic inspired colors */
-    --background: 222 84% 5%;
-    --foreground: 210 40% 98%;
+    /* Dark modern theme - Purple/Pink inspired like QUITTR */
+    --background: 240 15% 6%;
+    --foreground: 280 15% 95%;
 
-    --card: 227 84% 8%;
-    --card-foreground: 210 40% 98%;
+    --card: 240 20% 8% / 0.6;
+    --card-foreground: 280 15% 95%;
 
-    --popover: 227 84% 5%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 240 20% 8%;
+    --popover-foreground: 280 15% 95%;
 
-    /* Islamic green as primary */
-    --primary: 120 60% 50%;
-    --primary-foreground: 210 40% 98%;
+    /* Purple/Pink gradient primary */
+    --primary: 280 100% 70%;
+    --primary-foreground: 280 15% 95%;
+    --primary-glow: 300 100% 80%;
 
-    --secondary: 227 84% 8%;
-    --secondary-foreground: 210 40% 98%;
+    --secondary: 240 20% 12%;
+    --secondary-foreground: 280 15% 95%;
 
-    --muted: 227 84% 8%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 240 20% 10%;
+    --muted-foreground: 240 10% 60%;
 
-    --accent: 227 84% 10%;
-    --accent-foreground: 210 40% 98%;
+    --accent: 270 80% 60%;
+    --accent-foreground: 280 15% 95%;
 
-    /* Red for failed status */
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 210 40% 98%;
+    /* Red for destructive actions */
+    --destructive: 0 80% 65%;
+    --destructive-foreground: 280 15% 95%;
 
-    /* Success green for gooned status */
-    --success: 120 60% 50%;
-    --success-foreground: 210 40% 98%;
+    /* Green for success */
+    --success: 140 60% 55%;
+    --success-foreground: 280 15% 95%;
 
-    /* Warning for streaks */
-    --warning: 38 92% 50%;
-    --warning-foreground: 222 84% 3%;
+    /* Orange for warnings */
+    --warning: 35 90% 60%;
+    --warning-foreground: 240 15% 6%;
 
-    --border: 227 84% 15%;
-    --input: 227 84% 15%;
-    --ring: 120 60% 50%;
+    --border: 240 20% 15% / 0.3;
+    --input: 240 20% 12% / 0.8;
+    --ring: 280 100% 70%;
 
-    --radius: 0.75rem;
+    --radius: 1.5rem;
 
-    /* Islamic gradient */
-    --gradient-islamic: linear-gradient(135deg, hsl(120 60% 50%) 0%, hsl(142 76% 36%) 100%);
+    /* Modern gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(280 100% 70%) 0%, hsl(300 100% 80%) 50%, hsl(320 100% 75%) 100%);
+    --gradient-secondary: linear-gradient(135deg, hsl(240 20% 8%) 0%, hsl(260 25% 12%) 100%);
+    --gradient-bg: linear-gradient(135deg, hsl(240 15% 6%) 0%, hsl(260 20% 8%) 50%, hsl(280 15% 7%) 100%);
     
-    /* Glassy effects */
-    --glass-bg: 227 84% 12% / 0.8;
-    --glass-border: 227 84% 25% / 0.3;
-    --glass-backdrop: blur(12px);
+    /* Glass morphism effects */
+    --glass-bg: 240 20% 8% / 0.1;
+    --glass-border: 280 50% 50% / 0.2;
+    --glass-backdrop: blur(20px);
 
-    /* Shadows with Islamic green glow */
-    --shadow-glow: 0 0 30px hsl(120 60% 50% / 0.3);
-    --shadow-card: 0 8px 32px hsl(222 84% 3% / 0.4);
-    --shadow-glass: 0 8px 32px hsl(222 84% 3% / 0.3), inset 0 1px 0 hsl(227 84% 25% / 0.4);
+    /* Glowing shadows */
+    --shadow-glow: 0 0 40px hsl(280 100% 70% / 0.3);
+    --shadow-glow-strong: 0 0 60px hsl(280 100% 70% / 0.5);
+    --shadow-card: 0 20px 40px hsl(240 20% 3% / 0.4);
+    --shadow-glass: 0 20px 40px hsl(240 20% 3% / 0.3), inset 0 1px 0 hsl(280 50% 50% / 0.1);
 
     /* Smooth transitions */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --transition-spring: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     --sidebar-background: 0 0% 98%;
 
@@ -85,7 +90,8 @@
 /* Global styles for AkhCheck */
 @layer base {
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    font-family: 'SF Pro Display', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--gradient-bg);
   }
   
   .glass-card {
@@ -93,30 +99,111 @@
     border: 1px solid hsl(var(--glass-border));
     backdrop-filter: var(--glass-backdrop);
     box-shadow: var(--shadow-glass);
+    transition: var(--transition-smooth);
   }
   
-  .glow-success {
+  .modern-gradient {
+    background: var(--gradient-primary);
+  }
+  
+  .secondary-gradient {
+    background: var(--gradient-secondary);
+  }
+  
+  .glow-primary {
     box-shadow: var(--shadow-glow);
-    animation: pulse-glow 2s ease-in-out infinite;
+    transition: var(--transition-smooth);
   }
   
-  .islamic-gradient {
-    background: var(--gradient-islamic);
+  .glow-primary:hover {
+    box-shadow: var(--shadow-glow-strong);
+    transform: translateY(-2px);
+  }
+  
+  .animate-smooth {
+    transition: var(--transition-smooth);
+  }
+  
+  .animate-spring {
+    transition: var(--transition-spring);
+  }
+  
+  .animate-bounce-custom {
+    transition: var(--transition-bounce);
+  }
+  
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes slide-in-right {
+    from {
+      opacity: 0;
+      transform: translateX(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
   }
   
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: var(--shadow-glow); }
-    50% { box-shadow: 0 0 40px hsl(120 60% 50% / 0.5); }
+    0%, 100% { 
+      box-shadow: var(--shadow-glow);
+      transform: scale(1);
+    }
+    50% { 
+      box-shadow: var(--shadow-glow-strong);
+      transform: scale(1.02);
+    }
   }
   
-  @keyframes confetti {
-    0% { transform: scale(1) rotate(0deg); opacity: 1; }
-    50% { transform: scale(1.2) rotate(180deg); opacity: 0.8; }
-    100% { transform: scale(1) rotate(360deg); opacity: 1; }
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
   }
   
-  .confetti-animation {
-    animation: confetti 0.6s ease-in-out;
+  .animate-fade-in-up {
+    animation: fade-in-up 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .animate-scale-in {
+    animation: scale-in 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .animate-slide-in-right {
+    animation: slide-in-right 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .hover-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-glow);
   }
 }
 

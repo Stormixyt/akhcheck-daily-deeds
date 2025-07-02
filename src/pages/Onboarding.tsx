@@ -68,47 +68,49 @@ export const Onboarding = () => {
   const IconComponent = currentSlideData.icon;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-6">
+    <div className="min-h-screen flex items-center justify-center p-6 animate-fade-in-up">
       <div className="w-full max-w-sm">
-        <div className="bg-card/80 backdrop-blur-xl rounded-3xl p-8 text-center shadow-2xl border border-border/50">
+        <div className="glass-card rounded-3xl p-10 text-center shadow-2xl animate-scale-in">
           {/* Progress indicators */}
-          <div className="flex justify-center space-x-2 mb-8">
+          <div className="flex justify-center space-x-3 mb-10">
             {onboardingSlides.map((_, index) => (
               <div
                 key={index}
-                className={`h-1.5 rounded-full transition-all duration-300 ${
+                className={`h-2 rounded-full animate-spring ${
                   index <= currentSlide 
-                    ? "bg-primary w-6" 
-                    : "bg-muted w-1.5"
+                    ? "modern-gradient w-8 glow-primary" 
+                    : "bg-muted w-2"
                 }`}
               />
             ))}
           </div>
 
           {/* Icon */}
-          <div className="flex justify-center mb-6">
-            <div className="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center">
-              <IconComponent className="w-10 h-10 text-primary" />
+          <div className="flex justify-center mb-8 animate-float">
+            <div className="w-28 h-28 rounded-3xl modern-gradient flex items-center justify-center glow-primary">
+              <div className="w-20 h-20 rounded-2xl glass-card flex items-center justify-center">
+                <IconComponent className="w-12 h-12 text-primary" />
+              </div>
             </div>
           </div>
 
           {/* Content */}
-          <div className="space-y-6 mb-8">
-            <h2 className="text-2xl font-bold text-foreground leading-tight">
+          <div className="space-y-8 mb-10 animate-slide-in-right">
+            <h2 className="text-3xl font-bold text-foreground leading-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
               {currentSlideData.title}
             </h2>
             
-            <p className="text-muted-foreground leading-relaxed text-base">
+            <p className="text-muted-foreground leading-relaxed text-lg">
               {currentSlideData.content}
             </p>
 
             {currentSlideData.warning && (
-              <div className="bg-warning/10 border border-warning/20 rounded-2xl p-4 space-y-3">
-                <p className="text-warning-foreground text-sm font-medium">
+              <div className="glass-card border border-warning/30 rounded-3xl p-6 space-y-4 glow-primary">
+                <p className="text-warning text-base font-semibold">
                   {currentSlideData.warning}
                 </p>
                 {currentSlideData.hadith && (
-                  <p className="text-xs text-muted-foreground italic leading-relaxed">
+                  <p className="text-sm text-muted-foreground italic leading-relaxed">
                     {currentSlideData.hadith}
                   </p>
                 )}
@@ -117,19 +119,19 @@ export const Onboarding = () => {
           </div>
 
           {/* Actions */}
-          <div className="space-y-3">
+          <div className="space-y-4">
             {currentSlideData.hasAction ? (
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <Button 
                   onClick={handleAddFriend} 
-                  className="w-full h-12 rounded-2xl text-base font-semibold"
+                  className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient glow-primary hover-lift animate-spring"
                 >
                   Vriend toevoegen
                 </Button>
                 <Button 
                   onClick={handleNext} 
                   variant="outline" 
-                  className="w-full h-12 rounded-2xl border-2 bg-card/50 backdrop-blur-sm text-base font-medium"
+                  className="w-full h-16 rounded-3xl border-2 glass-card text-lg font-medium hover-lift animate-smooth"
                 >
                   Ik begrijp het
                 </Button>
@@ -137,19 +139,19 @@ export const Onboarding = () => {
             ) : currentSlideData.isLast ? (
               <Button 
                 onClick={handleComplete} 
-                className="w-full h-14 rounded-2xl text-base font-semibold shadow-lg"
+                className="w-full h-18 rounded-3xl text-lg font-semibold modern-gradient glow-primary hover-lift animate-bounce-custom"
                 size="lg"
               >
                 Enter the App
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="w-6 h-6 ml-3" />
               </Button>
             ) : (
               <Button 
                 onClick={handleNext} 
-                className="w-full h-12 rounded-2xl text-base font-semibold"
+                className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient glow-primary hover-lift animate-spring"
               >
                 Next
-                <ArrowRight className="w-5 h-5 ml-2" />
+                <ArrowRight className="w-6 h-6 ml-3" />
               </Button>
             )}
           </div>

@@ -86,28 +86,28 @@ export const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted flex items-center justify-center p-6">
+    <div className="min-h-screen flex items-center justify-center p-6 animate-fade-in-up">
       <div className="w-full max-w-sm">
         {/* Logo Section */}
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 mx-auto rounded-3xl bg-primary/10 flex items-center justify-center mb-6">
-            <div className="w-12 h-12 rounded-2xl bg-primary flex items-center justify-center">
-              <span className="text-2xl text-primary-foreground font-bold">A</span>
+        <div className="text-center mb-10 animate-scale-in">
+          <div className="w-24 h-24 mx-auto rounded-3xl modern-gradient flex items-center justify-center mb-6 glow-primary animate-pulse-glow">
+            <div className="w-16 h-16 rounded-2xl glass-card flex items-center justify-center">
+              <span className="text-3xl text-primary-foreground font-bold">A</span>
             </div>
           </div>
-          <h1 className="text-2xl font-bold text-foreground mb-2">
+          <h1 className="text-3xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
             {isLogin ? "Welcome Back" : "Create Account"}
           </h1>
-          <p className="text-muted-foreground text-sm">
+          <p className="text-muted-foreground text-base">
             {isLogin ? "Welcome back, akhi" : "Join the AkhCheck community"}
           </p>
         </div>
 
-        <div className="space-y-6">
-          <form onSubmit={handleSubmit} className="space-y-4">
+        <div className="space-y-8 animate-slide-in-right">
+          <form onSubmit={handleSubmit} className="space-y-5">
             {!isLogin && (
-              <div className="space-y-2">
-                <Label htmlFor="displayName" className="text-sm font-medium">Display Name</Label>
+              <div className="space-y-3">
+                <Label htmlFor="displayName" className="text-base font-medium text-foreground">Display Name</Label>
                 <Input
                   id="displayName"
                   type="text"
@@ -115,13 +115,13 @@ export const Auth = () => {
                   onChange={(e) => setDisplayName(e.target.value)}
                   required={!isLogin}
                   placeholder="Abdullah"
-                  className="h-12 rounded-xl border-2 bg-card/50 backdrop-blur-sm"
+                  className="h-14 rounded-2xl border-2 glass-card text-base animate-smooth focus:glow-primary"
                 />
               </div>
             )}
             
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-sm font-medium">Email</Label>
+            <div className="space-y-3">
+              <Label htmlFor="email" className="text-base font-medium text-foreground">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -129,12 +129,12 @@ export const Auth = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="abdullah@example.com"
-                className="h-12 rounded-xl border-2 bg-card/50 backdrop-blur-sm"
+                className="h-14 rounded-2xl border-2 glass-card text-base animate-smooth focus:glow-primary"
               />
             </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-sm font-medium">Password</Label>
+            <div className="space-y-3">
+              <Label htmlFor="password" className="text-base font-medium text-foreground">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -143,13 +143,13 @@ export const Auth = () => {
                 required
                 minLength={6}
                 placeholder="••••••••"
-                className="h-12 rounded-xl border-2 bg-card/50 backdrop-blur-sm"
+                className="h-14 rounded-2xl border-2 glass-card text-base animate-smooth focus:glow-primary"
               />
             </div>
 
             <Button 
               type="submit" 
-              className="w-full h-12 rounded-xl text-base font-semibold shadow-lg mt-6" 
+              className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient glow-primary hover-lift animate-spring mt-8" 
               disabled={loading}
             >
               {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
@@ -158,31 +158,31 @@ export const Auth = () => {
 
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-border/50" />
+              <span className="w-full border-t border-border/30" />
             </div>
-            <div className="relative flex justify-center text-xs uppercase">
-              <span className="bg-background px-3 text-muted-foreground font-medium">or</span>
+            <div className="relative flex justify-center text-sm uppercase">
+              <span className="glass-card px-4 py-2 rounded-xl text-muted-foreground font-medium">or</span>
             </div>
           </div>
 
           <Button
             type="button"
             variant="outline"
-            className="w-full h-12 rounded-xl border-2 bg-card/50 backdrop-blur-sm text-base font-medium"
+            className="w-full h-16 rounded-3xl border-2 glass-card text-lg font-medium hover-lift animate-smooth"
             onClick={handleGoogleAuth}
           >
-            <Chrome className="w-5 h-5 mr-3" />
+            <Chrome className="w-6 h-6 mr-3" />
             Continue with Google
           </Button>
 
-          <div className="text-center pt-4">
-            <p className="text-muted-foreground text-sm">
+          <div className="text-center pt-6">
+            <p className="text-muted-foreground text-base mb-2">
               {isLogin ? "Don't have an account?" : "Already have an account?"}
             </p>
             <Button
               variant="link"
               onClick={() => setIsLogin(!isLogin)}
-              className="text-primary font-medium p-0 h-auto"
+              className="text-primary font-semibold text-base p-0 h-auto hover:text-accent animate-smooth"
             >
               {isLogin ? "Sign up" : "Sign in"}
             </Button>
