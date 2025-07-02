@@ -149,8 +149,20 @@ export const Auth = () => {
 
             <Button 
               type="submit" 
-              className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient animate-gradient glow-primary hover-lift animate-spring mt-8 animate-fade-in-up stagger-5" 
+              className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient animate-gradient glow-primary animate-spring mt-8 transform-gpu" 
               disabled={loading}
+              style={{ 
+                transition: 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.2s cubic-bezier(0.23, 1, 0.32, 1)',
+                willChange: 'transform, box-shadow'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'translate3d(0, -2px, 0) scale(1.01)';
+                e.currentTarget.style.boxShadow = 'var(--shadow-glow-strong)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'translate3d(0, 0, 0) scale(1)';
+                e.currentTarget.style.boxShadow = 'var(--shadow-glow)';
+              }}
             >
               {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
             </Button>
@@ -168,8 +180,22 @@ export const Auth = () => {
           <Button
             type="button"
             variant="outline"
-            className="w-full h-16 rounded-3xl border-2 glass-card text-lg font-medium hover-lift animate-smooth"
+            className="w-full h-16 rounded-3xl border-2 glass-card text-lg font-medium transform-gpu"
             onClick={handleGoogleAuth}
+            style={{ 
+              transition: 'transform 0.2s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.2s cubic-bezier(0.23, 1, 0.32, 1), border-color 0.2s cubic-bezier(0.23, 1, 0.32, 1)',
+              willChange: 'transform, box-shadow, border-color'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translate3d(0, -2px, 0) scale(1.01)';
+              e.currentTarget.style.boxShadow = '0 0 25px hsl(280 100% 70% / 0.2)';
+              e.currentTarget.style.borderColor = 'hsl(280 100% 70% / 0.3)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translate3d(0, 0, 0) scale(1)';
+              e.currentTarget.style.boxShadow = 'var(--shadow-glass)';
+              e.currentTarget.style.borderColor = 'hsl(var(--glass-border))';
+            }}
           >
             <Chrome className="w-6 h-6 mr-3" />
             Continue with Google
