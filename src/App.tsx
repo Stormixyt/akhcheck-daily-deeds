@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import { Settings } from "./pages/Settings";
 import { Notifications } from "./pages/Notifications";
 import { Auth } from "./pages/Auth";
+import { AuthChoice } from "./pages/AuthChoice";
+import { Onboarding } from "./pages/Onboarding";
 import { EditProfile } from "./pages/EditProfile";
 import { AuthProvider } from "./hooks/useAuth";
 import NotFound from "./pages/NotFound";
@@ -24,7 +26,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/settings" element={<Settings />} />
             <Route path="/notifications" element={<Notifications />} />
+            <Route path="/auth-choice" element={<AuthChoice />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/edit-profile" element={<EditProfile />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

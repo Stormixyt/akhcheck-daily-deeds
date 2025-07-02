@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { StatusCard } from "@/components/StatusCard";
 import { FriendsList } from "@/components/FriendsList";
 import { MotivationalCarousel } from "@/components/MotivationalCarousel";
 import { DailyChallenge } from "@/components/DailyChallenge";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { useUserData } from "@/hooks/useUserData";
+import { useNavigate } from "react-router-dom";
 
 // Dummy data for testing
 const dummyFriends = [
@@ -29,9 +32,37 @@ const dummyFriends = [
 ];
 
 const Index = () => {
+  const { user, loading: authLoading } = useAuth();
+  const { profile, loading: profileLoading } = useUserData();
+  const navigate = useNavigate();
   const [userStreak, setUserStreak] = useState(5);
   const [todayStatus, setTodayStatus] = useState<"gooned" | "failed" | null>(null);
   const { toast } = useToast();
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      navigate("/auth-choice");
+      return;
+    }
+
+    if (!profileLoading && profile && !profile.onboarding_completed) {
+      navigate("/onboarding");
+      return;
+    }
+  }, [user, profile, authLoading, profileLoading, navigate]);
+
+  if (authLoading || profileLoading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground mt-2">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!user) return null;
 
   const handleStatusUpdate = (status: "gooned" | "failed") => {
     setTodayStatus(status);
@@ -55,7 +86,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Header username="Abdullah" />
+      <Header username={profile?.display_name || "Abdullah"} />
       
       <main className="max-w-md mx-auto p-4 space-y-6">
         {/* Daily motivation carousel */}

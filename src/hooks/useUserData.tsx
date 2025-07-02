@@ -8,6 +8,7 @@ export interface UserProfile {
   user_id: string;
   display_name: string;
   email: string | null;
+  onboarding_completed?: boolean;
 }
 
 export interface UserPreferences {
