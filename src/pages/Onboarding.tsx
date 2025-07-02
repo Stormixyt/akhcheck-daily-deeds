@@ -68,17 +68,17 @@ export const Onboarding = () => {
   const IconComponent = currentSlideData.icon;
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 animate-fade-in-up">
+    <div className="min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-sm">
-        <div className="glass-card rounded-3xl p-10 text-center shadow-2xl animate-scale-in">
+        <div className="glass-card rounded-3xl p-10 text-center shadow-2xl animate-fade-in-up">
           {/* Progress indicators */}
-          <div className="flex justify-center space-x-3 mb-10">
+          <div className="flex justify-center space-x-3 mb-10 animate-scale-in stagger-1">
             {onboardingSlides.map((_, index) => (
               <div
                 key={index}
                 className={`h-2 rounded-full animate-spring ${
                   index <= currentSlide 
-                    ? "modern-gradient w-8 glow-primary" 
+                    ? "modern-gradient animate-gradient w-8 glow-primary" 
                     : "bg-muted w-2"
                 }`}
               />
@@ -87,8 +87,8 @@ export const Onboarding = () => {
 
           {/* Icon */}
           <div className="flex justify-center mb-8 animate-float">
-            <div className="w-28 h-28 rounded-3xl modern-gradient flex items-center justify-center glow-primary">
-              <div className="w-20 h-20 rounded-2xl glass-card flex items-center justify-center">
+            <div className="w-28 h-28 rounded-3xl modern-gradient animate-gradient flex items-center justify-center glow-primary">
+              <div className="w-20 h-20 rounded-2xl glass-card flex items-center justify-center animate-scale-in stagger-2">
                 <IconComponent className="w-12 h-12 text-primary" />
               </div>
             </div>

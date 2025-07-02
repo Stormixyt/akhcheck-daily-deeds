@@ -5,28 +5,28 @@ export const AuthChoice = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 animate-fade-in-up">
+    <div className="min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-sm">
         {/* Logo/Title */}
-        <div className="text-center mb-12 animate-scale-in">
+        <div className="text-center mb-12 animate-fade-in-up">
           <div className="mb-4">
-            <div className="w-24 h-24 mx-auto rounded-3xl modern-gradient flex items-center justify-center mb-6 glow-primary animate-float">
-              <div className="w-16 h-16 rounded-2xl glass-card flex items-center justify-center">
+            <div className="w-24 h-24 mx-auto rounded-3xl modern-gradient animate-gradient flex items-center justify-center mb-6 glow-primary animate-float">
+              <div className="w-16 h-16 rounded-2xl glass-card flex items-center justify-center animate-scale-in stagger-1">
                 <span className="text-3xl text-primary-foreground font-bold">A</span>
               </div>
             </div>
           </div>
-          <h1 className="text-4xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h1 className="text-4xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-slide-in-right stagger-2">
             AkhCheck
           </h1>
-          <p className="text-muted-foreground text-lg">Stay disciplined, stay sincere</p>
+          <p className="text-muted-foreground text-lg animate-slide-in-right stagger-3">Stay disciplined, stay sincere</p>
         </div>
 
         {/* Auth Options */}
-        <div className="space-y-5 mb-8 animate-slide-in-right">
+        <div className="space-y-5 mb-8">
           <Button
             onClick={() => navigate("/auth?mode=signup")}
-            className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient glow-primary hover-lift animate-smooth"
+            className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient animate-gradient glow-primary hover-lift animate-smooth animate-slide-in-right stagger-4"
             size="lg"
           >
             Create Account
@@ -35,14 +35,14 @@ export const AuthChoice = () => {
           <Button
             onClick={() => navigate("/auth?mode=login")}
             variant="outline"
-            className="w-full h-16 rounded-3xl text-lg font-semibold border-2 glass-card hover-lift animate-smooth"
+            className="w-full h-16 rounded-3xl text-lg font-semibold border-2 glass-card hover-lift animate-smooth animate-slide-in-right stagger-5"
             size="lg"
           >
             Sign In
           </Button>
         </div>
 
-        <div className="text-center animate-fade-in-up" style={{ animationDelay: '0.3s' }}>
+        <div className="text-center animate-fade-in-up stagger-5">
           <p className="text-sm text-muted-foreground leading-relaxed px-4">
             By continuing, you agree to be honest with yourself and Allah
           </p>

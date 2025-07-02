@@ -86,27 +86,27 @@ export const Auth = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 animate-fade-in-up">
+    <div className="min-h-screen flex items-center justify-center p-6">
       <div className="w-full max-w-sm">
         {/* Logo Section */}
-        <div className="text-center mb-10 animate-scale-in">
-          <div className="w-24 h-24 mx-auto rounded-3xl modern-gradient flex items-center justify-center mb-6 glow-primary animate-pulse-glow">
-            <div className="w-16 h-16 rounded-2xl glass-card flex items-center justify-center">
+        <div className="text-center mb-10 animate-fade-in-up">
+          <div className="w-24 h-24 mx-auto rounded-3xl modern-gradient animate-gradient flex items-center justify-center mb-6 glow-primary animate-pulse-glow">
+            <div className="w-16 h-16 rounded-2xl glass-card flex items-center justify-center animate-scale-in stagger-1">
               <span className="text-3xl text-primary-foreground font-bold">A</span>
             </div>
           </div>
-          <h1 className="text-3xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-slide-in-right stagger-2">
             {isLogin ? "Welcome Back" : "Create Account"}
           </h1>
-          <p className="text-muted-foreground text-base">
+          <p className="text-muted-foreground text-base animate-slide-in-right stagger-3">
             {isLogin ? "Welcome back, akhi" : "Join the AkhCheck community"}
           </p>
         </div>
 
-        <div className="space-y-8 animate-slide-in-right">
+        <div className="space-y-8">
           <form onSubmit={handleSubmit} className="space-y-5">
             {!isLogin && (
-              <div className="space-y-3">
+              <div className="space-y-3 animate-slide-in-right stagger-4">
                 <Label htmlFor="displayName" className="text-base font-medium text-foreground">Display Name</Label>
                 <Input
                   id="displayName"
@@ -115,12 +115,12 @@ export const Auth = () => {
                   onChange={(e) => setDisplayName(e.target.value)}
                   required={!isLogin}
                   placeholder="Abdullah"
-                  className="h-14 rounded-2xl border-2 glass-card text-base animate-smooth focus:glow-primary"
+                  className="h-14 rounded-2xl border-2 glass-card text-base animate-smooth hover-lift focus:glow-primary"
                 />
               </div>
             )}
             
-            <div className="space-y-3">
+            <div className="space-y-3 animate-slide-in-right stagger-4">
               <Label htmlFor="email" className="text-base font-medium text-foreground">Email</Label>
               <Input
                 id="email"
@@ -129,11 +129,11 @@ export const Auth = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 placeholder="abdullah@example.com"
-                className="h-14 rounded-2xl border-2 glass-card text-base animate-smooth focus:glow-primary"
+                className="h-14 rounded-2xl border-2 glass-card text-base animate-smooth hover-lift focus:glow-primary"
               />
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-3 animate-slide-in-right stagger-5">
               <Label htmlFor="password" className="text-base font-medium text-foreground">Password</Label>
               <Input
                 id="password"
@@ -143,13 +143,13 @@ export const Auth = () => {
                 required
                 minLength={6}
                 placeholder="••••••••"
-                className="h-14 rounded-2xl border-2 glass-card text-base animate-smooth focus:glow-primary"
+                className="h-14 rounded-2xl border-2 glass-card text-base animate-smooth hover-lift focus:glow-primary"
               />
             </div>
 
             <Button 
               type="submit" 
-              className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient glow-primary hover-lift animate-spring mt-8" 
+              className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient animate-gradient glow-primary hover-lift animate-spring mt-8 animate-fade-in-up stagger-5" 
               disabled={loading}
             >
               {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}

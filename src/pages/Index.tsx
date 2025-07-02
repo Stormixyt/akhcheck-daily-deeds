@@ -85,17 +85,17 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen animate-fade-in-up">
+    <div className="min-h-screen">
       <Header username={profile?.display_name || "Abdullah"} />
       
       <main className="max-w-sm mx-auto p-6 space-y-8">
         {/* Daily motivation carousel */}
-        <div className="animate-scale-in">
+        <div className="animate-fade-in-up stagger-1">
           <MotivationalCarousel />
         </div>
 
         {/* User's own status */}
-        <div className="animate-slide-in-right" style={{ animationDelay: '0.1s' }}>
+        <div className="animate-slide-in-right stagger-2">
           <StatusCard
             username="You"
             streak={userStreak}
@@ -106,20 +106,17 @@ const Index = () => {
         </div>
 
         {/* Daily challenge */}
-        <div className="animate-slide-in-right" style={{ animationDelay: '0.2s' }}>
+        <div className="animate-slide-in-right stagger-3">
           <DailyChallenge />
         </div>
 
         {/* Friends list */}
-        <div className="animate-slide-in-right" style={{ animationDelay: '0.3s' }}>
+        <div className="animate-slide-in-right stagger-4">
           <FriendsList friends={dummyFriends} />
         </div>
 
         {/* Daily reminder */}
-        <div 
-          className="text-center p-6 glass-card rounded-3xl glow-primary hover-lift animate-smooth animate-slide-in-right" 
-          style={{ animationDelay: '0.4s' }}
-        >
+        <div className="text-center p-6 glass-card rounded-3xl glow-primary hover-lift animate-smooth animate-slide-in-right stagger-5">
           <p className="text-base text-muted-foreground leading-relaxed mb-3">
             "And whoever fears Allah - He will make for him a way out."
           </p>
