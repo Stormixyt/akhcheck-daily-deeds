@@ -15,9 +15,9 @@ interface FriendsListProps {
 export const FriendsList = ({ friends }: FriendsListProps) => {
   const getStatusIcon = (status: "gooned" | "failed" | null) => {
     switch (status) {
-      case "gooned":
-        return <CheckCircle className="w-5 h-5 text-success" />;
       case "failed":
+        return <CheckCircle className="w-5 h-5 text-success" />;
+      case "gooned":
         return <XCircle className="w-5 h-5 text-destructive" />;
       default:
         return <Clock className="w-5 h-5 text-muted-foreground" />;
@@ -26,10 +26,10 @@ export const FriendsList = ({ friends }: FriendsListProps) => {
 
   const getStatusText = (status: "gooned" | "failed" | null) => {
     switch (status) {
-      case "gooned":
-        return "Gooned ✅";
       case "failed":
-        return "Failed ❌";
+        return "Clean ✅";
+      case "gooned":
+        return "Gooned ❌";
       default:
         return "Pending ⏳";
     }

@@ -7,7 +7,7 @@ interface QuranDialogProps {
 }
 
 const quranVerses = {
-  gooned: [
+  failed: [
     {
       text: "And it is He who created the heavens and earth in truth. And the day He says, 'Be,' and it is, His word is the truth.",
       reference: "Quran 6:73",
@@ -29,7 +29,7 @@ const quranVerses = {
       theme: "gratitude"
     }
   ],
-  failed: [
+  gooned: [
     {
       text: "And it is He who accepts repentance from his servants and forgives sins, and He knows what you do.",
       reference: "Quran 42:25",
@@ -55,13 +55,13 @@ export const QuranDialog = ({ open, onOpenChange, status }: QuranDialogProps) =>
   const randomVerse = verses[Math.floor(Math.random() * verses.length)];
 
   const getTitle = () => {
-    return status === "gooned" 
+    return status === "failed" 
       ? "Alhamdulillah! 🤲" 
       : "Don't lose hope, brother 💚";
   };
 
   const getMessage = () => {
-    return status === "gooned"
+    return status === "failed"
       ? "Allah is pleased with your dedication. Keep going strong!"
       : "Every day is a new chance. Make tawbah and start again.";
   };
@@ -91,7 +91,7 @@ export const QuranDialog = ({ open, onOpenChange, status }: QuranDialogProps) =>
 
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
-              {status === "gooned" 
+              {status === "failed" 
                 ? "Keep this momentum going, akhi! 💪" 
                 : "Tomorrow is a fresh start. You got this! 🌟"}
             </p>

@@ -31,9 +31,9 @@ export const StatusCard = ({
   };
 
   const getStatusIcon = () => {
-    if (todayStatus === "gooned") {
+    if (todayStatus === "failed") {
       return <CheckCircle className="w-8 h-8 text-success" />;
-    } else if (todayStatus === "failed") {
+    } else if (todayStatus === "gooned") {
       return <XCircle className="w-8 h-8 text-destructive" />;
     }
     return null;
@@ -57,21 +57,21 @@ export const StatusCard = ({
               <p className="text-muted-foreground text-sm">How did you do today?</p>
               <div className="flex space-x-3">
                 <Button
-                  onClick={() => handleStatusClick("gooned")}
+                  onClick={() => handleStatusClick("failed")}
                   className="flex-1 bg-success hover:bg-success/90 text-success-foreground glow-success"
                   size="lg"
                 >
                   <CheckCircle className="w-5 h-5 mr-2" />
-                  Gooned ✅
+                  Stayed Clean ✅
                 </Button>
                 <Button
-                  onClick={() => handleStatusClick("failed")}
+                  onClick={() => handleStatusClick("gooned")}
                   variant="destructive"
                   className="flex-1"
                   size="lg"
                 >
                   <XCircle className="w-5 h-5 mr-2" />
-                  Failed ❌
+                  Gooned ❌
                 </Button>
               </div>
             </div>

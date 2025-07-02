@@ -10,13 +10,13 @@ const dummyFriends = [
     id: "1",
     username: "Ahmed_92",
     streak: 7,
-    todayStatus: "gooned" as const
+    todayStatus: "failed" as const
   },
   {
     id: "2", 
     username: "Yusuf_H",
-    streak: 3,
-    todayStatus: "failed" as const
+    streak: 0,
+    todayStatus: "gooned" as const
   },
   {
     id: "3",
@@ -34,7 +34,7 @@ const Index = () => {
   const handleStatusUpdate = (status: "gooned" | "failed") => {
     setTodayStatus(status);
     
-    if (status === "gooned") {
+    if (status === "failed") {
       setUserStreak(userStreak + 1);
       toast({
         title: "Alhamdulillah! 🤲",
