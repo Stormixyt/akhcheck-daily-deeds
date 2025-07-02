@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Header } from "@/components/Header";
 import { StatusCard } from "@/components/StatusCard";
 import { FriendsList } from "@/components/FriendsList";
+import { MotivationalCarousel } from "@/components/MotivationalCarousel";
+import { DailyChallenge } from "@/components/DailyChallenge";
 import { useToast } from "@/hooks/use-toast";
 
 // Dummy data for testing
@@ -56,6 +58,9 @@ const Index = () => {
       <Header username="Abdullah" />
       
       <main className="max-w-md mx-auto p-4 space-y-6">
+        {/* Daily motivation carousel */}
+        <MotivationalCarousel />
+
         {/* User's own status */}
         <StatusCard
           username="You"
@@ -65,11 +70,14 @@ const Index = () => {
           isOwnProfile={true}
         />
 
+        {/* Daily challenge */}
+        <DailyChallenge />
+
         {/* Friends list */}
         <FriendsList friends={dummyFriends} />
 
         {/* Daily reminder */}
-        <div className="text-center p-4 bg-accent/30 rounded-lg border border-border">
+        <div className="text-center p-4 glass-card rounded-lg">
           <p className="text-sm text-muted-foreground">
             "And whoever fears Allah - He will make for him a way out."
           </p>

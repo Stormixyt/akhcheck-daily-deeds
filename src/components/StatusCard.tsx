@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
 import { CheckCircle, XCircle } from "lucide-react";
 import { QuranDialog } from "./QuranDialog";
@@ -21,6 +21,7 @@ export const StatusCard = ({
 }: StatusCardProps) => {
   const [showQuranDialog, setShowQuranDialog] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<"gooned" | "failed" | null>(null);
+  const [isAnimating, setIsAnimating] = useState(false);
 
   const handleStatusClick = (status: "gooned" | "failed") => {
     if (!isOwnProfile) return;
@@ -28,6 +29,10 @@ export const StatusCard = ({
     setSelectedStatus(status);
     setShowQuranDialog(true);
     onStatusUpdate(status);
+    
+    // Trigger animation
+    setIsAnimating(true);
+    setTimeout(() => setIsAnimating(false), 600);
   };
 
   const getStatusIcon = () => {
@@ -41,7 +46,7 @@ export const StatusCard = ({
 
   return (
     <>
-      <Card className="p-6 bg-card border-border shadow-[var(--shadow-card)]">
+      <GlassCard className={`p-6 transition-all duration-300 ${isAnimating ? 'confetti-animation' : ''}`}>
         <div className="text-center space-y-4">
           <div className="flex items-center justify-center space-x-2">
             <h3 className="text-xl font-semibold text-foreground">{username}</h3>
@@ -83,7 +88,7 @@ export const StatusCard = ({
             </div>
           )}
         </div>
-      </Card>
+      </GlassCard>
 
       <QuranDialog
         open={showQuranDialog}

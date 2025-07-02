@@ -1,4 +1,4 @@
-import { Card } from "@/components/ui/card";
+import { GlassCard } from "@/components/ui/glass-card";
 import { CheckCircle, XCircle, Clock } from "lucide-react";
 
 interface Friend {
@@ -37,14 +37,14 @@ export const FriendsList = ({ friends }: FriendsListProps) => {
 
   if (friends.length === 0) {
     return (
-      <Card className="p-6 bg-card border-border">
+      <GlassCard className="p-6">
         <div className="text-center space-y-3">
           <h3 className="text-lg font-semibold text-foreground">No Friends Yet</h3>
           <p className="text-muted-foreground text-sm">
             Add friends with their unique friend code to stay accountable together!
           </p>
         </div>
-      </Card>
+      </GlassCard>
     );
   }
 
@@ -52,7 +52,7 @@ export const FriendsList = ({ friends }: FriendsListProps) => {
     <div className="space-y-3">
       <h2 className="text-lg font-semibold text-foreground mb-4">Your Brothers 🤝</h2>
       {friends.map((friend) => (
-        <Card key={friend.id} className="p-4 bg-card border-border">
+        <GlassCard key={friend.id} className="p-4 hover:bg-accent/10 transition-all duration-200">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <div>
@@ -70,7 +70,7 @@ export const FriendsList = ({ friends }: FriendsListProps) => {
               </span>
             </div>
           </div>
-        </Card>
+        </GlassCard>
       ))}
     </div>
   );
