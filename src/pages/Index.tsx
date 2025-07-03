@@ -9,6 +9,7 @@ import { UpdateLogDialog } from "@/components/UpdateLogDialog";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
 import { useUserData } from "@/hooks/useUserData";
 import { useNavigate } from "react-router-dom";
 
@@ -38,9 +39,90 @@ const Index = () => {
   const { user, loading: authLoading } = useAuth();
   const { profile, loading: profileLoading } = useUserData();
   const navigate = useNavigate();
-  const [userStreak, setUserStreak] = useState(5);
+  const [userStreak, setUserStreak] = useState(0);
   const [todayStatus, setTodayStatus] = useState<"gooned" | "failed" | null>(null);
+  const [loading, setLoading] = useState(true);
   const { toast } = useToast();
+
+  // Load user's streak and today's status on mount
+  useEffect(() => {
+    if (user) {
+      loadUserStreak();
+      checkTodayStatus();
+    }
+  }, [user]);
+
+  const loadUserStreak = async () => {
+    if (!user) return;
+    
+    try {
+      // Get all check-ins for this user, ordered by date
+      const { data: checkIns, error } = await supabase
+        .from('daily_check_ins')
+        .select('status, check_date')
+        .eq('user_id', user.id)
+        .is('group_id', null) // Only personal check-ins
+        .order('check_date', { ascending: false });
+
+      if (error) throw error;
+
+      // Calculate streak from consecutive "failed" (disciplined) days
+      let streak = 0;
+      const today = new Date().toISOString().split('T')[0];
+      
+      if (checkIns && checkIns.length > 0) {
+        // Start from yesterday (if no check-in today) or today
+        let currentDate = new Date();
+        const todayCheckIn = checkIns.find(c => c.check_date === today);
+        
+        if (!todayCheckIn) {
+          // If no check-in today, start counting from yesterday
+          currentDate.setDate(currentDate.getDate() - 1);
+        }
+
+        // Count consecutive disciplined days
+        for (const checkIn of checkIns) {
+          const checkDate = currentDate.toISOString().split('T')[0];
+          
+          if (checkIn.check_date === checkDate && checkIn.status === 'failed') {
+            streak++;
+            currentDate.setDate(currentDate.getDate() - 1);
+          } else {
+            break;
+          }
+        }
+      }
+
+      setUserStreak(streak);
+    } catch (error) {
+      console.error('Error loading user streak:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const checkTodayStatus = async () => {
+    if (!user) return;
+    
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      const { data, error } = await supabase
+        .from('daily_check_ins')
+        .select('status')
+        .eq('user_id', user.id)
+        .eq('check_date', today)
+        .is('group_id', null) // Only personal check-ins
+        .maybeSingle();
+
+      if (error) throw error;
+      
+      if (data) {
+        setTodayStatus(data.status as "gooned" | "failed");
+      }
+    } catch (error) {
+      console.error('Error checking today status:', error);
+    }
+  };
 
   useEffect(() => {
     if (!authLoading && !user) {
@@ -54,7 +136,7 @@ const Index = () => {
     }
   }, [user, profile, authLoading, profileLoading, navigate]);
 
-  if (authLoading || profileLoading) {
+  if (authLoading || profileLoading || loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
@@ -67,22 +149,50 @@ const Index = () => {
 
   if (!user) return null;
 
-  const handleStatusUpdate = (status: "gooned" | "failed") => {
-    setTodayStatus(status);
+  const handleStatusUpdate = async (status: "gooned" | "failed") => {
+    if (!user) return;
     
-    if (status === "failed") {
-      setUserStreak(userStreak + 1);
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Save to database
+      const { error } = await supabase
+        .from('daily_check_ins')
+        .insert({
+          user_id: user.id,
+          status,
+          check_date: today,
+          group_id: null // Personal check-in, not group
+        });
+
+      if (error) throw error;
+
+      setTodayStatus(status);
+      
+      if (status === "failed") {
+        // Increment streak
+        const newStreak = userStreak + 1;
+        setUserStreak(newStreak);
+        toast({
+          title: "Alhamdulillah! 🤲",
+          description: "Your streak continues! Keep it up, akhi.",
+          className: "bg-success text-success-foreground border-success",
+        });
+      } else {
+        // Reset streak to 0
+        setUserStreak(0);
+        toast({
+          title: "Don't give up 💚",
+          description: "Tomorrow is a new chance. Make tawbah and restart.",
+          className: "bg-destructive text-destructive-foreground border-destructive",
+        });
+      }
+    } catch (error: any) {
+      console.error('Error saving check-in:', error);
       toast({
-        title: "Alhamdulillah! 🤲",
-        description: "Your streak continues! Keep it up, akhi.",
-        className: "bg-success text-success-foreground border-success",
-      });
-    } else {
-      setUserStreak(0);
-      toast({
-        title: "Don't give up 💚",
-        description: "Tomorrow is a new chance. Make tawbah and restart.",
-        className: "bg-destructive text-destructive-foreground border-destructive",
+        title: "Error",
+        description: "Failed to save your check-in. Please try again.",
+        variant: "destructive",
       });
     }
   };
