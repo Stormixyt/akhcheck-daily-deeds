@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Send, Users, Flame, BookOpen, Plus } from "lucide-react";
+import { ArrowLeft, Send, Users, Flame, BookOpen, Plus, Image, Paperclip } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { GlassCard } from "@/components/ui/glass-card";
@@ -27,6 +27,7 @@ interface Message {
   message: string | null;
   type: string;
   metadata: any;
+  image_url: string | null;
   created_at: string;
   profiles: {
     display_name: string;
@@ -73,7 +74,9 @@ export const GroupDetail = () => {
   const [newMessage, setNewMessage] = useState("");
   const [loading, setLoading] = useState(true);
   const [hasCheckedToday, setHasCheckedToday] = useState(false);
+  const [uploading, setUploading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!user || !groupId) return;
@@ -110,6 +113,7 @@ export const GroupDetail = () => {
             message: payload.new.message,
             type: payload.new.type,
             metadata: payload.new.metadata,
+            image_url: payload.new.image_url,
             created_at: payload.new.created_at,
             profiles: profileData || { display_name: 'Unknown' }
           };
@@ -175,6 +179,7 @@ export const GroupDetail = () => {
           message,
           type,
           metadata,
+          image_url,
           created_at
         `)
         .eq('group_id', groupId)
@@ -309,6 +314,49 @@ export const GroupDetail = () => {
     }
   };
 
+  const handleImageUpload = async (file: File) => {
+    if (!file || !groupId || !user) return;
+
+    setUploading(true);
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${groupId}/${user.id}/${Date.now()}.${fileExt}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('chat-images')
+        .upload(fileName, file);
+
+      if (uploadError) throw uploadError;
+
+      const { data: { publicUrl } } = supabase.storage
+        .from('chat-images')
+        .getPublicUrl(fileName);
+
+      // Send image message
+      await supabase
+        .from('group_messages')
+        .insert({
+          group_id: groupId,
+          user_id: user.id,
+          type: 'image',
+          image_url: publicUrl
+        });
+
+      toast({
+        title: "Image sent!",
+        description: "Your image has been shared with the group.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: "Failed to upload image",
+        variant: "destructive",
+      });
+    } finally {
+      setUploading(false);
+    }
+  };
+
   const handleDailyCheckIn = async (status: 'disciplined' | 'gooned') => {
     try {
       const today = new Date().toISOString().split('T')[0];
@@ -341,7 +389,9 @@ export const GroupDetail = () => {
 
       setHasCheckedToday(true);
       
-      // Update streak logic would go here
+      // Update group streak logic
+      await updateGroupStreak(status);
+      
       toast({
         title: status === 'disciplined' ? "Alhamdulillah! 🤲" : "Don't give up 💚",
         description: status === 'disciplined' 
@@ -352,11 +402,48 @@ export const GroupDetail = () => {
           : "bg-destructive text-destructive-foreground border-destructive",
       });
     } catch (error: any) {
+      console.error('Check-in error:', error);
       toast({
         title: "Error",
         description: "Failed to record check-in",
         variant: "destructive",
       });
+    }
+  };
+
+  const updateGroupStreak = async (status: 'disciplined' | 'gooned') => {
+    try {
+      const today = new Date().toISOString().split('T')[0];
+      
+      // Get all members' check-ins for today
+      const { data: todayCheckIns } = await supabase
+        .from('daily_check_ins')
+        .select('status')
+        .eq('group_id', groupId)
+        .eq('check_date', today);
+
+      // Check if everyone checked in and maintained discipline
+      const totalMembers = group?.member_count || 0;
+      const checkedInCount = todayCheckIns?.length || 0;
+      const disciplinedCount = todayCheckIns?.filter(ci => ci.status === 'disciplined').length || 0;
+
+      if (checkedInCount === totalMembers) {
+        // Everyone checked in, update streak
+        const newStreak = disciplinedCount === totalMembers ? (group?.current_streak || 0) + 1 : 0;
+        
+        await supabase
+          .from('group_streaks')
+          .upsert({
+            group_id: groupId,
+            current_streak: newStreak,
+            last_check_date: today
+          });
+
+        // Refresh group data
+        fetchGroupData();
+      }
+    } catch (error) {
+      console.error('Error updating group streak:', error);
     }
   };
 
@@ -388,6 +475,7 @@ export const GroupDetail = () => {
     <div className="min-h-screen bg-background flex flex-col">
       {/* Group Notifications */}
       <GroupNotifications groupId={groupId || ""} userId={user?.id || ""} />
+      
       {/* Header */}
       <header className="bg-card/50 backdrop-blur-md border-b border-border p-4 sticky top-0 z-10">
         <div className="flex items-center justify-between max-w-md mx-auto">
@@ -466,6 +554,28 @@ export const GroupDetail = () => {
                   </div>
                 </div>
               </GlassCard>
+            ) : message.type === 'image' ? (
+              <div className={`flex ${message.user_id === user?.id ? 'justify-end' : 'justify-start'}`}>
+                <div className={`max-w-[80%] p-2 rounded-2xl ${
+                  message.user_id === user?.id 
+                    ? 'bg-primary text-primary-foreground ml-4' 
+                    : 'bg-card text-card-foreground mr-4'
+                }`}>
+                  {message.user_id !== user?.id && (
+                    <div className="text-xs text-muted-foreground mb-1">
+                      {message.profiles?.display_name}
+                    </div>
+                  )}
+                  {message.image_url && (
+                    <img
+                      src={message.image_url}
+                      alt="Shared image"
+                      className="max-w-full h-auto rounded-lg cursor-pointer"
+                      onClick={() => window.open(message.image_url!, '_blank')}
+                    />
+                  )}
+                </div>
+              </div>
             ) : (
               <div className={`flex ${message.user_id === user?.id ? 'justify-end' : 'justify-start'}`}>
                 <div className={`max-w-[80%] p-3 rounded-2xl ${
@@ -522,6 +632,16 @@ export const GroupDetail = () => {
             <BookOpen className="w-4 h-4 mr-1" />
             Drop Verse
           </Button>
+          <Button
+            onClick={() => fileInputRef.current?.click()}
+            variant="outline"
+            size="sm"
+            className="glass-card border-accent/20"
+            disabled={uploading}
+          >
+            <Image className="w-4 h-4 mr-1" />
+            {uploading ? 'Uploading...' : 'Image'}
+          </Button>
         </div>
         <div className="flex space-x-2">
           <Input
@@ -535,6 +655,19 @@ export const GroupDetail = () => {
             <Send className="w-4 h-4" />
           </Button>
         </div>
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/*"
+          onChange={(e) => {
+            const file = e.target.files?.[0];
+            if (file) {
+              handleImageUpload(file);
+              e.target.value = '';
+            }
+          }}
+          className="hidden"
+        />
       </div>
     </div>
   );

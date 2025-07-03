@@ -189,9 +189,10 @@ const Index = () => {
       }
     } catch (error: any) {
       console.error('Error saving check-in:', error);
+      console.error('Full error object:', JSON.stringify(error, null, 2));
       toast({
         title: "Error",
-        description: "Failed to save your check-in. Please try again.",
+        description: error.message || "Failed to save your check-in. Please try again.",
         variant: "destructive",
       });
     }
