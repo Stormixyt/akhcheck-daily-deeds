@@ -94,6 +94,9 @@ export const Groups = () => {
   const createGroup = async () => {
     if (!groupName.trim()) return;
 
+    console.log('Creating group with user:', user?.id);
+    console.log('Group name:', groupName.trim());
+
     try {
       const { data: groupData, error: groupError } = await supabase
         .from('groups')
@@ -104,6 +107,7 @@ export const Groups = () => {
         .select()
         .single();
 
+      console.log('Group creation result:', { groupData, groupError });
       if (groupError) throw groupError;
 
       // Add creator as admin member
@@ -136,9 +140,10 @@ export const Groups = () => {
       setGroupName("");
       fetchUserGroups();
     } catch (error: any) {
+      console.error('Group creation error:', error);
       toast({
         title: "Error",
-        description: error.message,
+        description: error.message || "Failed to create group",
         variant: "destructive",
       });
     }
