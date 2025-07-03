@@ -106,6 +106,9 @@ export type Database = {
       group_messages: {
         Row: {
           created_at: string
+          deleted_for_everyone: boolean | null
+          deleted_for_user: Json | null
+          edited_at: string | null
           group_id: string
           id: string
           image_url: string | null
@@ -116,6 +119,9 @@ export type Database = {
         }
         Insert: {
           created_at?: string
+          deleted_for_everyone?: boolean | null
+          deleted_for_user?: Json | null
+          edited_at?: string | null
           group_id: string
           id?: string
           image_url?: string | null
@@ -126,6 +132,9 @@ export type Database = {
         }
         Update: {
           created_at?: string
+          deleted_for_everyone?: boolean | null
+          deleted_for_user?: Json | null
+          edited_at?: string | null
           group_id?: string
           id?: string
           image_url?: string | null
