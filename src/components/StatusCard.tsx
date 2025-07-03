@@ -107,19 +107,19 @@ export const StatusCard = ({
               <div className="flex space-x-3">
                 <Button
                   onClick={() => handleStatusClick("failed")}
-                  className="flex-1 bg-success hover:bg-success/90 text-success-foreground glow-success"
+                  className="flex-1 bg-success hover:bg-success/90 text-success-foreground glow-success text-xs"
                   size="lg"
                 >
-                  <CheckCircle className="w-5 h-5 mr-2" />
+                  <CheckCircle className="w-4 h-4 mr-1" />
                   I Succeeded ✅
                 </Button>
                 <Button
                   onClick={() => handleStatusClick("gooned")}
-                  className="flex-1 bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/20"
+                  className="flex-1 bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/20 text-xs"
                   variant="outline"
                   size="lg"
                 >
-                  <XCircle className="w-5 h-5 mr-2" />
+                  <XCircle className="w-4 h-4 mr-1" />
                   I gooned 💀
                 </Button>
               </div>

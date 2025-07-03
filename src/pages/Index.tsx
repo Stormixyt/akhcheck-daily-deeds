@@ -113,24 +113,6 @@ const Index = () => {
           <DailyChallenge />
         </div>
 
-        {/* My Brothers section with verses */}
-        <div className="animate-slide-in-right stagger-4">
-          <GlassCard className="p-4">
-            <h3 className="font-semibold text-foreground mb-3 flex items-center">
-              <span className="mr-2">👥</span>
-              My Brothers
-            </h3>
-            <div className="space-y-3">
-              <div className="text-center p-3 bg-accent/5 rounded-lg border border-accent/20">
-                <p className="text-sm text-muted-foreground italic">
-                  "The believers in their mutual kindness, compassion, and sympathy are just one body..."
-                </p>
-                <p className="text-xs text-accent font-semibold mt-1">— Sahih al-Bukhari</p>
-              </div>
-              <FriendsList friends={dummyFriends} />
-            </div>
-          </GlassCard>
-        </div>
 
         {/* Daily reminder */}
         <div className="text-center p-6 glass-card rounded-3xl glow-primary hover-lift animate-smooth animate-slide-in-right stagger-5">
