@@ -40,7 +40,7 @@ const Index = () => {
   const { profile, loading: profileLoading } = useUserData();
   const navigate = useNavigate();
   const [userStreak, setUserStreak] = useState(0);
-  const [todayStatus, setTodayStatus] = useState<"gooned" | "failed" | null>(null);
+  const [todayStatus, setTodayStatus] = useState<"gooned" | "disciplined" | null>(null);
   const [loading, setLoading] = useState(true);
   const { toast } = useToast();
 
@@ -84,7 +84,7 @@ const Index = () => {
         for (const checkIn of checkIns) {
           const checkDate = currentDate.toISOString().split('T')[0];
           
-          if (checkIn.check_date === checkDate && checkIn.status === 'failed') {
+          if (checkIn.check_date === checkDate && checkIn.status === 'disciplined') {
             streak++;
             currentDate.setDate(currentDate.getDate() - 1);
           } else {
@@ -117,7 +117,7 @@ const Index = () => {
       if (error) throw error;
       
       if (data) {
-        setTodayStatus(data.status as "gooned" | "failed");
+        setTodayStatus(data.status as "gooned" | "disciplined");
       }
     } catch (error) {
       console.error('Error checking today status:', error);
@@ -149,7 +149,7 @@ const Index = () => {
 
   if (!user) return null;
 
-  const handleStatusUpdate = async (status: "gooned" | "failed") => {
+  const handleStatusUpdate = async (status: "gooned" | "disciplined") => {
     if (!user) return;
     
     try {
@@ -169,7 +169,7 @@ const Index = () => {
 
       setTodayStatus(status);
       
-      if (status === "failed") {
+      if (status === "disciplined") {
         // Increment streak
         const newStreak = userStreak + 1;
         setUserStreak(newStreak);

@@ -3,11 +3,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 interface QuranDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  status: "gooned" | "failed" | null;
+  status: "gooned" | "disciplined" | null;
 }
 
 const quranVerses = {
-  failed: [
+  disciplined: [
     {
       text: "And it is He who created the heavens and earth in truth. And the day He says, 'Be,' and it is, His word is the truth.",
       reference: "Quran 6:73",
@@ -55,13 +55,13 @@ export const QuranDialog = ({ open, onOpenChange, status }: QuranDialogProps) =>
   const randomVerse = verses[Math.floor(Math.random() * verses.length)];
 
   const getTitle = () => {
-    return status === "failed" 
+    return status === "disciplined" 
       ? "Alhamdulillah! 🤲" 
       : "Don't lose hope, brother 💚";
   };
 
   const getMessage = () => {
-    return status === "failed"
+    return status === "disciplined"
       ? "Allah is pleased with your dedication. Keep going strong!"
       : "Every day is a new chance. Make tawbah and start again.";
   };
@@ -91,7 +91,7 @@ export const QuranDialog = ({ open, onOpenChange, status }: QuranDialogProps) =>
 
           <div className="text-center">
             <p className="text-sm text-muted-foreground">
-              {status === "failed" 
+              {status === "disciplined" 
                 ? "Keep this momentum going, akhi! 💪" 
                 : "Tomorrow is a fresh start. You got this! 🌟"}
             </p>

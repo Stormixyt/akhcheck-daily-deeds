@@ -17,8 +17,8 @@ import {
 interface StatusCardProps {
   username: string;
   streak: number;
-  todayStatus: "gooned" | "failed" | null;
-  onStatusUpdate: (status: "gooned" | "failed") => void;
+  todayStatus: "gooned" | "disciplined" | null;
+  onStatusUpdate: (status: "gooned" | "disciplined") => void;
   isOwnProfile?: boolean;
 }
 
@@ -30,16 +30,16 @@ export const StatusCard = ({
   isOwnProfile = false 
 }: StatusCardProps) => {
   const [showQuranDialog, setShowQuranDialog] = useState(false);
-  const [selectedStatus, setSelectedStatus] = useState<"gooned" | "failed" | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<"gooned" | "disciplined" | null>(null);
   const [isAnimating, setIsAnimating] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
-  const [pendingStatus, setPendingStatus] = useState<"gooned" | "failed" | null>(null);
+  const [pendingStatus, setPendingStatus] = useState<"gooned" | "disciplined" | null>(null);
 
   // Check if warning has been shown before
   const hasSeenWarning = localStorage.getItem('akhcheck-warning-seen') === 'true';
   const repeatWarnings = localStorage.getItem('akhcheck-repeat-warnings') === 'true';
 
-  const handleStatusClick = (status: "gooned" | "failed") => {
+  const handleStatusClick = (status: "gooned" | "disciplined") => {
     if (!isOwnProfile) return;
     
     // Show warning for "gooned" status if not seen before or if repeat warnings is enabled
@@ -53,7 +53,7 @@ export const StatusCard = ({
     proceedWithStatusUpdate(status);
   };
 
-  const proceedWithStatusUpdate = (status: "gooned" | "failed") => {
+  const proceedWithStatusUpdate = (status: "gooned" | "disciplined") => {
     setSelectedStatus(status);
     setShowQuranDialog(true);
     onStatusUpdate(status);
@@ -80,7 +80,7 @@ export const StatusCard = ({
   };
 
   const getStatusIcon = () => {
-    if (todayStatus === "failed") {
+    if (todayStatus === "disciplined") {
       return <CheckCircle className="w-8 h-8 text-success" />;
     } else if (todayStatus === "gooned") {
       return <XCircle className="w-8 h-8 text-destructive" />;
@@ -106,7 +106,7 @@ export const StatusCard = ({
               <p className="text-muted-foreground text-sm">How did you do today?</p>
               <div className="flex space-x-3">
                 <Button
-                  onClick={() => handleStatusClick("failed")}
+                  onClick={() => handleStatusClick("disciplined")}
                   className="flex-1 bg-success hover:bg-success/90 text-success-foreground glow-success px-2 text-xs min-w-0"
                   size="lg"
                 >
