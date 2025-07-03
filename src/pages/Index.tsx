@@ -4,6 +4,7 @@ import { StatusCard } from "@/components/StatusCard";
 import { FriendsList } from "@/components/FriendsList";
 import { MotivationalCarousel } from "@/components/MotivationalCarousel";
 import { DailyChallenge } from "@/components/DailyChallenge";
+import { PrayerTimes } from "@/components/PrayerTimes";
 import { UpdateLogDialog } from "@/components/UpdateLogDialog";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useToast } from "@/hooks/use-toast";
@@ -108,14 +109,19 @@ const Index = () => {
           />
         </div>
 
+        {/* Prayer Times */}
+        <div className="animate-slide-in-right stagger-4">
+          <PrayerTimes />
+        </div>
+
         {/* Daily challenge */}
-        <div className="animate-slide-in-right stagger-3">
+        <div className="animate-slide-in-right stagger-5">
           <DailyChallenge />
         </div>
 
 
         {/* Daily reminder */}
-        <div className="text-center p-6 glass-card rounded-3xl glow-primary hover-lift animate-smooth animate-slide-in-right stagger-5">
+        <div className="text-center p-6 glass-card rounded-3xl glow-primary hover-lift animate-smooth animate-slide-in-right stagger-6">
           <p className="text-base text-muted-foreground leading-relaxed mb-3">
             "And whoever fears Allah - He will make for him a way out."
           </p>

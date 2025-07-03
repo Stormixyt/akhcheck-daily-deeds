@@ -491,6 +491,27 @@ export const GroupDetail = () => {
 
       {/* Message Input */}
       <div className="p-4 bg-card/50 backdrop-blur-md border-t border-border max-w-md mx-auto w-full">
+        {/* Quick Action Buttons - Only show if not checked in today */}
+        {!hasCheckedToday && (
+          <div className="flex space-x-2 mb-3">
+            <Button
+              onClick={() => handleDailyCheckIn('disciplined')}
+              className="flex-1 bg-success hover:bg-success/80 text-success-foreground text-xs py-2"
+              size="sm"
+            >
+              ✅ I Succeeded
+            </Button>
+            <Button
+              onClick={() => handleDailyCheckIn('gooned')}
+              className="flex-1 bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/20 text-xs py-2"
+              variant="outline"
+              size="sm"
+            >
+              💀 I gooned
+            </Button>
+          </div>
+        )}
+
         <div className="flex space-x-2 mb-2">
           <Button
             onClick={dropQuranVerse}
