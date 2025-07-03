@@ -11,6 +11,7 @@ import { AuthChoice } from "./pages/AuthChoice";
 import { Onboarding } from "./pages/Onboarding";
 import { EditProfile } from "./pages/EditProfile";
 import { Groups } from "./pages/Groups";
+import { GroupDetail } from "./pages/GroupDetail";
 import { AuthProvider } from "./hooks/useAuth";
 import { useTheme } from "./hooks/useTheme";
 import NotFound from "./pages/NotFound";
@@ -32,6 +33,7 @@ const AppContent = () => {
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/edit-profile" element={<EditProfile />} />
           <Route path="/groups" element={<Groups />} />
+          <Route path="/groups/:groupId" element={<GroupDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
