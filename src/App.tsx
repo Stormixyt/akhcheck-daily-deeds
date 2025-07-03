@@ -10,6 +10,7 @@ import { Auth } from "./pages/Auth";
 import { AuthChoice } from "./pages/AuthChoice";
 import { Onboarding } from "./pages/Onboarding";
 import { EditProfile } from "./pages/EditProfile";
+import { Groups } from "./pages/Groups";
 import { AuthProvider } from "./hooks/useAuth";
 import NotFound from "./pages/NotFound";
 
@@ -30,6 +31,7 @@ const App = () => (
             <Route path="/auth" element={<Auth />} />
             <Route path="/onboarding" element={<Onboarding />} />
             <Route path="/edit-profile" element={<EditProfile />} />
+            <Route path="/groups" element={<Groups />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

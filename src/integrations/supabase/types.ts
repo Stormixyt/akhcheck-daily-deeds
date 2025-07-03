@@ -9,6 +9,41 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      daily_check_ins: {
+        Row: {
+          check_date: string
+          created_at: string
+          group_id: string | null
+          id: string
+          status: string
+          user_id: string
+        }
+        Insert: {
+          check_date?: string
+          created_at?: string
+          group_id?: string | null
+          id?: string
+          status: string
+          user_id: string
+        }
+        Update: {
+          check_date?: string
+          created_at?: string
+          group_id?: string | null
+          id?: string
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "daily_check_ins_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       friendships: {
         Row: {
           created_at: string
@@ -33,6 +68,138 @@ export type Database = {
           status?: string
           updated_at?: string
           user_id?: string
+        }
+        Relationships: []
+      }
+      group_members: {
+        Row: {
+          group_id: string
+          id: string
+          joined_at: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          group_id: string
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id: string
+        }
+        Update: {
+          group_id?: string
+          id?: string
+          joined_at?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_members_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_messages: {
+        Row: {
+          created_at: string
+          group_id: string
+          id: string
+          message: string | null
+          metadata: Json | null
+          type: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          group_id: string
+          id?: string
+          message?: string | null
+          metadata?: Json | null
+          type?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          group_id?: string
+          id?: string
+          message?: string | null
+          metadata?: Json | null
+          type?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_messages_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: false
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      group_streaks: {
+        Row: {
+          created_at: string
+          current_streak: number
+          group_id: string
+          id: string
+          last_check_date: string | null
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_streak?: number
+          group_id: string
+          id?: string
+          last_check_date?: string | null
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_streak?: number
+          group_id?: string
+          id?: string
+          last_check_date?: string | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "group_streaks_group_id_fkey"
+            columns: ["group_id"]
+            isOneToOne: true
+            referencedRelation: "groups"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      groups: {
+        Row: {
+          code: string
+          created_at: string
+          created_by: string
+          id: string
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          code?: string
+          created_at?: string
+          created_by: string
+          id?: string
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          code?: string
+          created_at?: string
+          created_by?: string
+          id?: string
+          name?: string
+          updated_at?: string
         }
         Relationships: []
       }
@@ -104,6 +271,7 @@ export type Database = {
           anonymous_mode: boolean
           created_at: string
           daily_reminder: boolean
+          has_seen_v11_update: boolean
           id: string
           reminder_time: string
           repeat_warnings: boolean
@@ -115,6 +283,7 @@ export type Database = {
           anonymous_mode?: boolean
           created_at?: string
           daily_reminder?: boolean
+          has_seen_v11_update?: boolean
           id?: string
           reminder_time?: string
           repeat_warnings?: boolean
@@ -126,6 +295,7 @@ export type Database = {
           anonymous_mode?: boolean
           created_at?: string
           daily_reminder?: boolean
+          has_seen_v11_update?: boolean
           id?: string
           reminder_time?: string
           repeat_warnings?: boolean

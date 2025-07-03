@@ -19,6 +19,7 @@ export interface UserPreferences {
   daily_reminder: boolean;
   reminder_time: string;
   theme: 'green' | 'blue' | 'purple';
+  has_seen_v11_update: boolean;
 }
 
 export interface UserGoal {

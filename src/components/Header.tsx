@@ -1,4 +1,4 @@
-import { Bell, Settings, User } from "lucide-react";
+import { Bell, Settings, User, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
 
@@ -23,6 +23,14 @@ export const Header = ({ username }: HeaderProps) => {
         </div>
         
         <div className="flex items-center space-x-2">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="text-muted-foreground hover:text-foreground"
+            onClick={() => navigate("/groups")}
+          >
+            <Users className="w-5 h-5" />
+          </Button>
           <Button 
             variant="ghost" 
             size="icon" 

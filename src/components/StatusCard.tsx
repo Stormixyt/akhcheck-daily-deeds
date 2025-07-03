@@ -111,7 +111,7 @@ export const StatusCard = ({
                   size="lg"
                 >
                   <CheckCircle className="w-5 h-5 mr-2" />
-                  Stayed Clean ✅
+                  I stayed disciplined ✅
                 </Button>
                 <Button
                   onClick={() => handleStatusClick("gooned")}
@@ -120,7 +120,7 @@ export const StatusCard = ({
                   size="lg"
                 >
                   <XCircle className="w-5 h-5 mr-2" />
-                  Gooned ❌
+                  I gooned 💀
                 </Button>
               </div>
             </div>
@@ -146,23 +146,23 @@ export const StatusCard = ({
           <AlertDialogHeader>
             <div className="flex items-center space-x-2">
               <AlertTriangle className="w-6 h-6 text-warning" />
-              <AlertDialogTitle className="text-foreground">Let op, Akhi.</AlertDialogTitle>
+              <AlertDialogTitle className="text-foreground">Bro… even serieus.</AlertDialogTitle>
             </div>
             <AlertDialogDescription className="text-muted-foreground text-left space-y-3">
-              <p>Wat je hier deelt, is zichtbaar voor je vrienden. Deel geen zonden. De Profeet ﷺ zei:</p>
+              <p>Wat je hier indrukt, wordt zichtbaar voor je groep. Deel geen specifieke zonden. De Profeet ﷺ zei:</p>
               <p className="italic bg-accent/20 p-3 rounded-lg border-l-4 border-warning">
                 "Iedereen uit mijn ummah zal worden vergeven, behalve degenen die hun zonden openlijk bekennen."
               </p>
               <p className="text-xs text-muted-foreground">— Sahih al-Bukhari, 6069</p>
-              <p>Deel alleen je struggles als je vertrouwt op de ander – anders: houd het tussen jou en Allah.</p>
+              <p className="font-medium">🧠 Reflecteer, deel nooit in detail. Allah bedekt – respecteer dat.</p>
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter className="flex-col sm:flex-row space-y-2 sm:space-y-0">
             <AlertDialogCancel onClick={handleWarningCancel}>
-              Annuleren
+              Annuleer
             </AlertDialogCancel>
             <AlertDialogAction onClick={handleWarningProceed} className="bg-warning hover:bg-warning/90 text-warning-foreground">
-              Ik begrijp het, doorgaan
+              Ik begrijp het
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

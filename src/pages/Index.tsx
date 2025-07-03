@@ -4,6 +4,7 @@ import { StatusCard } from "@/components/StatusCard";
 import { FriendsList } from "@/components/FriendsList";
 import { MotivationalCarousel } from "@/components/MotivationalCarousel";
 import { DailyChallenge } from "@/components/DailyChallenge";
+import { UpdateLogDialog } from "@/components/UpdateLogDialog";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
 import { useUserData } from "@/hooks/useUserData";
@@ -86,6 +87,7 @@ const Index = () => {
 
   return (
     <div className="min-h-screen">
+      <UpdateLogDialog />
       <Header username={profile?.display_name || "Abdullah"} />
       
       <main className="max-w-sm mx-auto p-6 space-y-8">
