@@ -93,8 +93,27 @@ export const GroupDetail = () => {
           table: 'group_messages',
           filter: `group_id=eq.${groupId}`
         },
-        (payload) => {
-          fetchMessages(); // Refetch to get profile data
+        async (payload) => {
+          // Get profile data for the new message
+          const { data: profileData } = await supabase
+            .from('profiles')
+            .select('display_name')
+            .eq('user_id', payload.new.user_id)
+            .single();
+          
+          // Add message instantly to UI
+          const newMessage: Message = {
+            id: payload.new.id,
+            group_id: payload.new.group_id,
+            user_id: payload.new.user_id,
+            message: payload.new.message,
+            type: payload.new.type,
+            metadata: payload.new.metadata,
+            created_at: payload.new.created_at,
+            profiles: profileData || { display_name: 'Unknown' }
+          };
+          
+          setMessages(prev => [...prev, newMessage]);
         }
       )
       .subscribe();
