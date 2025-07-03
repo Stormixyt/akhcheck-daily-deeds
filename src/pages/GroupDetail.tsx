@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useUserData } from "@/hooks/useUserData";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { GroupNotifications } from "@/components/GroupNotifications";
 
 interface Group {
   id: string;
@@ -385,6 +386,8 @@ export const GroupDetail = () => {
 
   return (
     <div className="min-h-screen bg-background flex flex-col">
+      {/* Group Notifications */}
+      <GroupNotifications groupId={groupId || ""} userId={user?.id || ""} />
       {/* Header */}
       <header className="bg-card/50 backdrop-blur-md border-b border-border p-4 sticky top-0 z-10">
         <div className="flex items-center justify-between max-w-md mx-auto">
@@ -409,7 +412,14 @@ export const GroupDetail = () => {
               </div>
             </div>
           </div>
-          <div className="w-10"></div>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={() => navigate("/")}
+            className="text-muted-foreground hover:text-foreground"
+          >
+            <span className="text-lg">🏠</span>
+          </Button>
         </div>
       </header>
 
@@ -421,14 +431,14 @@ export const GroupDetail = () => {
             <div className="flex space-x-2">
               <Button
                 onClick={() => handleDailyCheckIn('disciplined')}
-                className="flex-1 bg-success hover:bg-success/80"
+                className="flex-1 bg-success hover:bg-success/80 text-success-foreground"
               >
                 ✅ I stayed disciplined
               </Button>
               <Button
                 onClick={() => handleDailyCheckIn('gooned')}
-                variant="destructive"
-                className="flex-1"
+                className="flex-1 bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/20"
+                variant="outline"
               >
                 💀 I gooned
               </Button>
