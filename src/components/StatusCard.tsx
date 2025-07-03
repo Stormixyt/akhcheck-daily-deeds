@@ -111,7 +111,7 @@ export const StatusCard = ({
                   size="lg"
                 >
                   <CheckCircle className="w-5 h-5 mr-2" />
-                  I stayed disciplined ✅
+                  I Succeeded ✅
                 </Button>
                 <Button
                   onClick={() => handleStatusClick("gooned")}
