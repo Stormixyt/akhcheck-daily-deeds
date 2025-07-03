@@ -12,31 +12,40 @@ import { Onboarding } from "./pages/Onboarding";
 import { EditProfile } from "./pages/EditProfile";
 import { Groups } from "./pages/Groups";
 import { AuthProvider } from "./hooks/useAuth";
+import { useTheme } from "./hooks/useTheme";
 import NotFound from "./pages/NotFound";
+
+const AppContent = () => {
+  useTheme(); // Apply theme colors
+  
+  return (
+    <TooltipProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/notifications" element={<Notifications />} />
+          <Route path="/auth-choice" element={<AuthChoice />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
+          <Route path="/groups" element={<Groups />} />
+          {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </TooltipProvider>
+  );
+};
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/notifications" element={<Notifications />} />
-            <Route path="/auth-choice" element={<AuthChoice />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route path="/edit-profile" element={<EditProfile />} />
-            <Route path="/groups" element={<Groups />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+      <AppContent />
     </AuthProvider>
   </QueryClientProvider>
 );
