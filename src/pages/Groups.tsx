@@ -250,6 +250,20 @@ export const Groups = () => {
           </Button>
         </div>
 
+        {/* How to Join Instructions */}
+        <GlassCard className="p-4 bg-accent/5 border-accent/20">
+          <h3 className="font-semibold text-foreground mb-2 flex items-center">
+            <Hash className="w-4 h-4 mr-2 text-accent" />
+            How to Join a Group
+          </h3>
+          <div className="text-sm text-muted-foreground space-y-1">
+            <p>🔹 Ask your friends for their <strong>Group Code</strong></p>
+            <p>🔹 Group codes work anywhere - no same network needed!</p>
+            <p>🔹 Each group has a unique 8-character code</p>
+            <p>🔹 Your group codes are shown below each group name</p>
+          </div>
+        </GlassCard>
+
         {/* Create Group Form */}
         {showCreateForm && (
           <GlassCard className="p-4 space-y-4">
@@ -284,14 +298,18 @@ export const Groups = () => {
               <Input
                 id="groupCode"
                 value={groupCode}
-                onChange={(e) => setGroupCode(e.target.value)}
-                placeholder="abc123de"
-                className="glass-card"
+                onChange={(e) => setGroupCode(e.target.value.toLowerCase())}
+                placeholder="e.g. abc123de"
+                className="glass-card font-mono"
+                maxLength={8}
               />
+              <p className="text-xs text-muted-foreground">
+                💡 Ask your friends to share their group code with you
+              </p>
             </div>
             <div className="flex space-x-2">
               <Button onClick={joinGroup} className="flex-1" disabled={!groupCode.trim()}>
-                Join
+                Join Brotherhood
               </Button>
               <Button onClick={() => setShowJoinForm(false)} variant="outline" className="flex-1">
                 Cancel
@@ -332,9 +350,14 @@ export const Groups = () => {
                         <Flame className="w-4 h-4" />
                         <span>{group.current_streak} days</span>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <Hash className="w-3 h-3" />
-                        <span className="font-mono text-xs">{group.code}</span>
+                    </div>
+                    <div className="mt-2 p-2 bg-accent/10 rounded-lg border border-accent/20">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-1">
+                          <Hash className="w-3 h-3 text-accent" />
+                          <span className="text-xs text-muted-foreground">Share this code:</span>
+                        </div>
+                        <span className="font-mono text-sm font-semibold text-accent">{group.code}</span>
                       </div>
                     </div>
                   </div>
