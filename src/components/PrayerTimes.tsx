@@ -15,6 +15,7 @@ export const PrayerTimes = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
 
   useEffect(() => {
+    fetchPrayerTimes();
     // Update current time every minute
     const interval = setInterval(() => {
       setCurrentTime(new Date());
@@ -23,36 +24,126 @@ export const PrayerTimes = () => {
     return () => clearInterval(interval);
   }, []);
 
-  useEffect(() => {
-    // Get user location and calculate prayer times
-    const fetchPrayerTimes = async () => {
-      try {
-        // For demo purposes, using static times for Netherlands
-        // In a real app, you'd use an API like Aladhan or calculate based on location
-        const today = new Date();
-        const times = [
-          { name: "Fajr", time: "05:30", icon: <Sunrise className="w-4 h-4" />, passed: false },
-          { name: "Dhuhr", time: "13:15", icon: <Sun className="w-4 h-4" />, passed: false },
-          { name: "Asr", time: "15:45", icon: <Sun className="w-4 h-4" />, passed: false },
-          { name: "Maghrib", time: "17:20", icon: <Sunset className="w-4 h-4" />, passed: false },
-          { name: "Isha", time: "19:00", icon: <Moon className="w-4 h-4" />, passed: false }
-        ];
-
-        // Check which prayers have passed
-        const currentTimeString = currentTime.toTimeString().slice(0, 5);
-        const updatedTimes = times.map(prayer => ({
-          ...prayer,
-          passed: currentTimeString > prayer.time
-        }));
-
-        setPrayerTimes(updatedTimes);
-      } catch (error) {
-        console.error('Error fetching prayer times:', error);
+  const fetchPrayerTimes = async () => {
+    try {
+      // Get user's location first
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            await loadPrayerTimesForLocation(position.coords.latitude, position.coords.longitude);
+          },
+          async () => {
+            // Fallback to Amsterdam, Netherlands if location access denied
+            await loadPrayerTimesForCity('Amsterdam', 'Netherlands');
+          }
+        );
+      } else {
+        // Fallback to Amsterdam, Netherlands if geolocation not supported
+        await loadPrayerTimesForCity('Amsterdam', 'Netherlands');
       }
-    };
+    } catch (error) {
+      console.error('Error fetching prayer times:', error);
+      // Use fallback static times if API fails
+      setFallbackTimes();
+    }
+  };
 
-    fetchPrayerTimes();
-  }, [currentTime]);
+  const loadPrayerTimesForLocation = async (latitude: number, longitude: number) => {
+    try {
+      const response = await fetch(
+        `https://api.aladhan.com/v1/timings?latitude=${latitude}&longitude=${longitude}&method=3&school=1`
+      );
+      const data = await response.json();
+      
+      if (data.code === 200) {
+        setPrayerTimesFromAPI(data.data);
+        setLocation(`${data.data.meta.city || 'Your location'}`);
+      } else {
+        throw new Error('API response not successful');
+      }
+    } catch (error) {
+      console.error('Error loading prayer times for location:', error);
+      // Fallback to Amsterdam
+      await loadPrayerTimesForCity('Amsterdam', 'Netherlands');
+    }
+  };
+
+  const loadPrayerTimesForCity = async (city: string, country: string) => {
+    try {
+      const response = await fetch(
+        `https://api.aladhan.com/v1/timingsByCity?city=${city}&country=${country}&method=3&school=1`
+      );
+      const data = await response.json();
+      
+      if (data.code === 200) {
+        setPrayerTimesFromAPI(data.data);
+        setLocation(`${city}, ${country}`);
+      } else {
+        throw new Error('API response not successful');
+      }
+    } catch (error) {
+      console.error('Error loading prayer times for city:', error);
+      setFallbackTimes();
+    }
+  };
+
+  const setPrayerTimesFromAPI = (data: any) => {
+    const timings = data.timings;
+    const currentTimeString = currentTime.toTimeString().slice(0, 5);
+    
+    const times = [
+      { 
+        name: "Fajr", 
+        time: formatTime(timings.Fajr), 
+        icon: <Sunrise className="w-4 h-4" />, 
+        passed: currentTimeString > formatTime(timings.Fajr)
+      },
+      { 
+        name: "Dhuhr", 
+        time: formatTime(timings.Dhuhr), 
+        icon: <Sun className="w-4 h-4" />, 
+        passed: currentTimeString > formatTime(timings.Dhuhr)
+      },
+      { 
+        name: "Asr", 
+        time: formatTime(timings.Asr), 
+        icon: <Sun className="w-4 h-4" />, 
+        passed: currentTimeString > formatTime(timings.Asr)
+      },
+      { 
+        name: "Maghrib", 
+        time: formatTime(timings.Maghrib), 
+        icon: <Sunset className="w-4 h-4" />, 
+        passed: currentTimeString > formatTime(timings.Maghrib)
+      },
+      { 
+        name: "Isha", 
+        time: formatTime(timings.Isha), 
+        icon: <Moon className="w-4 h-4" />, 
+        passed: currentTimeString > formatTime(timings.Isha)
+      }
+    ];
+
+    setPrayerTimes(times);
+  };
+
+  const formatTime = (timeString: string) => {
+    // Remove timezone info and seconds, return HH:MM format
+    return timeString.split(' ')[0].slice(0, 5);
+  };
+
+  const setFallbackTimes = () => {
+    const currentTimeString = currentTime.toTimeString().slice(0, 5);
+    const times = [
+      { name: "Fajr", time: "06:00", icon: <Sunrise className="w-4 h-4" />, passed: currentTimeString > "06:00" },
+      { name: "Dhuhr", time: "12:30", icon: <Sun className="w-4 h-4" />, passed: currentTimeString > "12:30" },
+      { name: "Asr", time: "15:00", icon: <Sun className="w-4 h-4" />, passed: currentTimeString > "15:00" },
+      { name: "Maghrib", time: "17:30", icon: <Sunset className="w-4 h-4" />, passed: currentTimeString > "17:30" },
+      { name: "Isha", time: "19:00", icon: <Moon className="w-4 h-4" />, passed: currentTimeString > "19:00" }
+    ];
+    setPrayerTimes(times);
+    setLocation("Netherlands (Approximate)");
+  };
 
   const getNextPrayer = () => {
     const nextPrayer = prayerTimes.find(prayer => !prayer.passed);
