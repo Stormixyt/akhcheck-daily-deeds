@@ -1,78 +1,74 @@
-import { ArrowLeft, Bell, CheckCircle, XCircle, Target } from "lucide-react";
+import { ArrowLeft, Bell, CheckCircle, XCircle, Target, Users, Flame } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useNavigate } from "react-router-dom";
+import { useNotifications } from "@/hooks/useNotifications";
 
-// Enhanced notification data with Islamic motivation
-const notifications = [
-  {
-    id: "1",
-    type: "friend_update",
-    message: "Omar heeft vandaag stayed clean 💪",
-    time: "2 hours ago",
-    icon: CheckCircle,
-    color: "text-success",
-    unread: true
-  },
-  {
-    id: "2", 
-    type: "streak_milestone",
-    message: "Je streak is nu 7 dagen! 🔥",
-    time: "1 day ago",
-    icon: Target,
-    color: "text-warning",
-    unread: true
-  },
-  {
-    id: "3",
-    type: "daily_challenge",
-    message: "Vandaag's uitdaging: Bid op tijd ⏰",
-    time: "1 day ago",
-    icon: Bell,
-    color: "text-primary",
-    unread: true
-  },
-  {
-    id: "4",
-    type: "friend_boost",
-    message: "Ahmed heeft je een boost gestuurd: 'Stay strong, akhi!'",
-    time: "2 days ago",
-    icon: Target,
-    color: "text-warning",
-    unread: false
-  },
-  {
-    id: "5",
-    type: "verse_reminder",
-    message: "Nieuwe verse: 'Don't expose your sins' - Sahih al-Bukhari",
-    time: "3 days ago",
-    icon: Bell,
-    color: "text-primary",
-    unread: false
-  },
-  {
-    id: "6",
-    type: "goal_completed",
-    message: "Dagelijkse doelen voltooid! Alle 5 gebeden gedaan 🤲",
-    time: "4 days ago",
-    icon: CheckCircle,
-    color: "text-success",
-    unread: false
-  },
-  {
-    id: "7",
-    type: "motivation",
-    message: "Reminder: 'Discipline beats motivation elke dag'",
-    time: "5 days ago",
-    icon: Target,
-    color: "text-warning",
-    unread: false
+const getNotificationIcon = (type: string) => {
+  switch (type) {
+    case 'friend_update':
+    case 'group_checkin':
+      return CheckCircle;
+    case 'streak_milestone':
+      return Flame;
+    case 'daily_challenge':
+    case 'verse_reminder':
+      return Bell;
+    case 'friend_boost':
+    case 'motivation':
+      return Target;
+    case 'goal_completed':
+      return CheckCircle;
+    default:
+      return Bell;
   }
-];
+};
+
+const getNotificationColor = (type: string) => {
+  switch (type) {
+    case 'friend_update':
+    case 'group_checkin':
+    case 'goal_completed':
+      return "text-success";
+    case 'streak_milestone':
+      return "text-warning";
+    case 'daily_challenge':
+    case 'verse_reminder':
+      return "text-primary";
+    case 'friend_boost':
+    case 'motivation':
+      return "text-warning";
+    default:
+      return "text-primary";
+  }
+};
+
+const formatTimeAgo = (dateString: string) => {
+  const now = new Date();
+  const date = new Date(dateString);
+  const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
+  
+  if (diffInHours < 1) return "Just now";
+  if (diffInHours < 24) return `${diffInHours} hours ago`;
+  const diffInDays = Math.floor(diffInHours / 24);
+  return `${diffInDays} day${diffInDays !== 1 ? 's' : ''} ago`;
+};
 
 export const Notifications = () => {
   const navigate = useNavigate();
-  const unreadCount = notifications.filter(n => n.unread).length;
+  const { notifications, loading } = useNotifications();
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="text-muted-foreground mt-2">Loading notifications...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -111,15 +107,17 @@ export const Notifications = () => {
         <div className="space-y-3">
           <h2 className="text-lg font-semibold text-foreground">Recent Activity</h2>
           
-          {notifications.map((notification, index) => {
-            const IconComponent = notification.icon;
+          {notifications.map((notification) => {
+            const IconComponent = getNotificationIcon(notification.type);
+            const iconColor = getNotificationColor(notification.type);
+            
             return (
               <GlassCard 
                 key={notification.id} 
                 className="p-4 cursor-pointer hover:bg-accent/10 transition-colors"
                 onClick={() => {
                   // Navigate based on notification type
-                  if (notification.type === "friend_update" || notification.type === "friend_boost") {
+                  if (notification.type === "friend_update" || notification.type === "friend_boost" || notification.type === "group_checkin") {
                     navigate("/");
                   } else if (notification.type === "goal_completed") {
                     navigate("/settings");
@@ -127,7 +125,7 @@ export const Notifications = () => {
                 }}
               >
                 <div className="flex items-start space-x-3">
-                  <div className={`mt-1 ${notification.color}`}>
+                  <div className={`mt-1 ${iconColor}`}>
                     <IconComponent className="w-5 h-5" />
                   </div>
                   
@@ -136,11 +134,11 @@ export const Notifications = () => {
                       {notification.message}
                     </p>
                     <p className="text-xs text-muted-foreground mt-1">
-                      {notification.time}
+                      {formatTimeAgo(notification.created_at)}
                     </p>
                   </div>
                   
-                  {notification.unread && (
+                  {!notification.read && (
                     <div className="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0" />
                   )}
                 </div>
