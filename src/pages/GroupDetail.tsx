@@ -562,13 +562,13 @@ export const GroupDetail = () => {
       <GroupNotifications groupId={groupId || ""} userId={user?.id || ""} />
       
       {/* Header */}
-      <header className="bg-card/95 backdrop-blur-xl border-b border-border/50 p-4 sticky top-0 z-10">
+      <header className="bg-card/95 backdrop-blur-xl border-b border-border/50 p-4 sticky top-0 z-20">
         <div className="flex items-center justify-between max-w-md mx-auto">
           <Button 
             variant="ghost" 
             size="icon" 
             onClick={() => navigate("/groups")}
-            className="text-muted-foreground hover:text-foreground rounded-full h-10 w-10"
+            className="text-muted-foreground hover:text-foreground rounded-full h-10 w-10 relative z-10"
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
@@ -589,7 +589,7 @@ export const GroupDetail = () => {
             variant="ghost" 
             size="icon" 
             onClick={() => navigate("/")}
-            className="text-muted-foreground hover:text-foreground rounded-full h-10 w-10"
+            className="text-muted-foreground hover:text-foreground rounded-full h-10 w-10 relative z-10"
           >
             <span className="text-lg">🏠</span>
           </Button>
@@ -635,20 +635,20 @@ export const GroupDetail = () => {
       </div>
 
       {/* Message Input */}
-      <div className="p-4 bg-card/95 backdrop-blur-xl border-t border-border/50 max-w-md mx-auto w-full">
+      <div className="p-4 bg-card/95 backdrop-blur-xl border-t border-border/50 max-w-md mx-auto w-full sticky bottom-0 z-10">
         {/* Quick Action Buttons - Only show if not checked in today */}
         {!hasCheckedToday && (
           <div className="flex space-x-2 mb-3">
             <Button
               onClick={() => handleDailyCheckIn('disciplined')}
-              className="flex-1 bg-success hover:bg-success/80 text-success-foreground text-xs py-2 rounded-full"
+              className="flex-1 bg-success hover:bg-success/80 text-success-foreground text-xs py-2 rounded-full relative z-10"
               size="sm"
             >
               ✅ I Succeeded
             </Button>
             <Button
               onClick={() => handleDailyCheckIn('gooned')}
-              className="flex-1 bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/20 text-xs py-2 rounded-full"
+              className="flex-1 bg-destructive/10 hover:bg-destructive/20 text-destructive border border-destructive/20 text-xs py-2 rounded-full relative z-10"
               variant="outline"
               size="sm"
             >

@@ -18,15 +18,15 @@ export const UpdateLogDialog = () => {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    // Show dialog if user is logged in and hasn't seen v1.1 update
-    if (user && preferences && !preferences.has_seen_v11_update) {
+    // Show dialog if user is logged in and hasn't seen v1.2 update
+    if (user && preferences && !preferences.has_seen_v12_update) {
       setOpen(true);
     }
   }, [user, preferences]);
 
   const handleLockIn = async () => {
     if (preferences) {
-      await updatePreferences({ has_seen_v11_update: true });
+      await updatePreferences({ has_seen_v12_update: true });
     }
     setOpen(false);
   };
@@ -39,42 +39,42 @@ export const UpdateLogDialog = () => {
             <Flame className="w-8 h-8 text-primary-foreground" />
           </div>
           <DialogTitle className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            🔥 AkhCheck v1.1 – Brotherhood Update
+            🚀 AkhCheck v1.2 – Power Update
           </DialogTitle>
           <DialogDescription className="text-base text-muted-foreground">
-            Stay updated and halal with your squad.
+            New level of discipline and connection, akhi.
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 py-4">
           <div className="space-y-3">
             <div className="flex items-center space-x-3 text-foreground">
-              <Users className="w-5 h-5 text-success" />
-              <span className="text-sm font-medium">✅ Introducing Groups</span>
-            </div>
-            <div className="flex items-center space-x-3 text-foreground">
-              <MessageCircle className="w-5 h-5 text-accent" />
-              <span className="text-sm font-medium">🗣️ In-App Chat</span>
-            </div>
-            <div className="flex items-center space-x-3 text-foreground">
-              <Skull className="w-5 h-5 text-destructive" />
-              <span className="text-sm font-medium">💀 Goon = FAIL (als je gooned, ben je cooked)</span>
-            </div>
-            <div className="flex items-center space-x-3 text-foreground">
               <Calendar className="w-5 h-5 text-warning" />
-              <span className="text-sm font-medium">🔥 Daily Discipline Streaks</span>
+              <span className="text-sm font-medium">🔔 Daily notification system</span>
             </div>
             <div className="flex items-center space-x-3 text-foreground">
-              <BookOpen className="w-5 h-5 text-primary" />
-              <span className="text-sm font-medium">📖 Quran Verse Drops</span>
+              <Users className="w-5 h-5 text-success" />
+              <span className="text-sm font-medium">📢 Real group notifications</span>
             </div>
             <div className="flex items-center space-x-3 text-foreground">
               <Palette className="w-5 h-5 text-accent" />
-              <span className="text-sm font-medium">🎨 Thema kleuren LIVE switch</span>
+              <span className="text-sm font-medium">🌙 Light & Dark theme toggle</span>
             </div>
             <div className="flex items-center space-x-3 text-foreground">
-              <Settings className="w-5 h-5 text-muted-foreground" />
-              <span className="text-sm font-medium">⚙️ Instellingen gefixt</span>
+              <MessageCircle className="w-5 h-5 text-primary" />
+              <span className="text-sm font-medium">🎯 Custom group goals</span>
+            </div>
+            <div className="flex items-center space-x-3 text-foreground">
+              <BookOpen className="w-5 h-5 text-success" />
+              <span className="text-sm font-medium">🚀 More daily challenges</span>
+            </div>
+            <div className="flex items-center space-x-3 text-foreground">
+              <Settings className="w-5 h-5 text-accent" />
+              <span className="text-sm font-medium">🌍 Translate button (EN/NL)</span>
+            </div>
+            <div className="flex items-center space-x-3 text-foreground">
+              <Skull className="w-5 h-5 text-muted-foreground" />
+              <span className="text-sm font-medium">🔧 Sync fixes & UI improvements</span>
             </div>
           </div>
         </div>
