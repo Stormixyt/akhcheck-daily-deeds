@@ -1,7 +1,4 @@
-import { useState, useEffect } from 'react';
-import { supabase } from '@/integrations/supabase/client';
-import { useAuth } from './useAuth';
-import { useToast } from './use-toast';
+import { useState } from 'react';
 
 export interface GroupGoal {
   id: string;
@@ -16,111 +13,69 @@ export interface GroupGoal {
 }
 
 export const useGroupGoals = (groupId: string) => {
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const [goals, setGoals] = useState<GroupGoal[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchGoals = async () => {
-    if (!groupId) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('group_goals')
-        .select('*')
-        .eq('group_id', groupId)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setGoals(data || []);
-    } catch (error) {
-      console.error('Error fetching group goals:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [goals, setGoals] = useState<GroupGoal[]>([
+    {
+      id: '1',
+      group_id: groupId,
+      title: 'Daily Prayers',
+      description: 'Complete all 5 daily prayers',
+      target_count: 35,
+      current_count: 12,
+      created_by: 'user1',
+      created_at: new Date().toISOString(),
+      completed: false,
+    },
+    {
+      id: '2',
+      group_id: groupId,
+      title: 'Quran Reading',
+      description: 'Read 1 page of Quran daily',
+      target_count: 30,
+      current_count: 8,
+      created_by: 'user2',
+      created_at: new Date().toISOString(),
+      completed: false,
+    },
+  ]);
+  const [loading, setLoading] = useState(false);
 
   const createGoal = async (title: string, description: string, targetCount: number) => {
-    if (!user || !groupId) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('group_goals')
-        .insert({
-          group_id: groupId,
-          title,
-          description,
-          target_count: targetCount,
-          current_count: 0,
-          created_by: user.id,
-          completed: false,
-        })
-        .select()
-        .single();
-
-      if (error) throw error;
-
-      setGoals(prev => [data, ...prev]);
-      toast({
-        title: "Goal Created!",
-        description: "New group goal has been added.",
-      });
-    } catch (error) {
-      console.error('Error creating goal:', error);
-      toast({
-        title: "Error",
-        description: "Failed to create goal",
-        variant: "destructive",
-      });
-    }
+    const newGoal: GroupGoal = {
+      id: Date.now().toString(),
+      group_id: groupId,
+      title,
+      description,
+      target_count: targetCount,
+      current_count: 0,
+      created_by: 'current_user',
+      created_at: new Date().toISOString(),
+      completed: false,
+    };
+    setGoals(prev => [newGoal, ...prev]);
   };
 
   const updateGoalProgress = async (goalId: string, increment: number = 1) => {
-    try {
-      const goal = goals.find(g => g.id === goalId);
-      if (!goal) return;
-
-      const newCount = Math.max(0, goal.current_count + increment);
-      const isCompleted = newCount >= goal.target_count;
-
-      const { error } = await supabase
-        .from('group_goals')
-        .update({
-          current_count: newCount,
-          completed: isCompleted,
-        })
-        .eq('id', goalId);
-
-      if (error) throw error;
-
-      setGoals(prev =>
-        prev.map(g =>
-          g.id === goalId
-            ? { ...g, current_count: newCount, completed: isCompleted }
-            : g
-        )
-      );
-
-      if (isCompleted && !goal.completed) {
-        toast({
-          title: "Goal Completed! 🎉",
-          description: `"${goal.title}" has been achieved!`,
-        });
-      }
-    } catch (error) {
-      console.error('Error updating goal progress:', error);
-    }
+    setGoals(prev =>
+      prev.map(g => {
+        if (g.id === goalId) {
+          const newCount = Math.max(0, g.current_count + increment);
+          const isCompleted = newCount >= g.target_count;
+          return { ...g, current_count: newCount, completed: isCompleted };
+        }
+        return g;
+      })
+    );
   };
 
-  useEffect(() => {
-    fetchGoals();
-  }, [groupId]);
+  const refetch = async () => {
+    // No-op for now
+  };
 
   return {
     goals,
     loading,
     createGoal,
     updateGoalProgress,
-    refetch: fetchGoals,
+    refetch,
   };
 };

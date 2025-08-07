@@ -76,6 +76,45 @@ export type Database = {
         }
         Relationships: []
       }
+      group_goals: {
+        Row: {
+          completed: boolean
+          created_at: string
+          created_by: string
+          current_count: number
+          description: string | null
+          group_id: string
+          id: string
+          target_count: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          completed?: boolean
+          created_at?: string
+          created_by: string
+          current_count?: number
+          description?: string | null
+          group_id: string
+          id?: string
+          target_count?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          completed?: boolean
+          created_at?: string
+          created_by?: string
+          current_count?: number
+          description?: string | null
+          group_id?: string
+          id?: string
+          target_count?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       group_members: {
         Row: {
           group_id: string
