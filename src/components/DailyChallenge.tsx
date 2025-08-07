@@ -1,74 +1,67 @@
 import { useState, useEffect } from "react";
-import { Target, CheckCircle } from "lucide-react";
+import { Target, CheckCircle, Clock } from "lucide-react";
 import { GlassCard } from "@/components/ui/glass-card";
 import { Button } from "@/components/ui/button";
-
-const dailyChallenges = [
-  "Vandaag geen TikTok",
-  "Bid vandaag op tijd, alle 5",
-  "20 minuten wandelen",
-  "Lees 1 pagina Quran",
-  "Help iemand vandaag",
-  "Geen junk food vandaag",
-  "10 minuten dhikr",
-  "Bel je ouders",
-  "30 minuten leren"
-];
+import { Badge } from "@/components/ui/badge";
+import { useDailyChallenges } from "@/hooks/useDailyChallenges";
 
 export const DailyChallenge = () => {
-  const [challenge, setChallenge] = useState("");
-  const [isCompleted, setIsCompleted] = useState(false);
+  const { currentChallenge, getDifficultyBadge } = useDailyChallenges();
+  const [completed, setCompleted] = useState(false);
 
+  // Check if today's challenge is completed (from localStorage)
   useEffect(() => {
-    // Generate daily challenge based on date to ensure consistency
-    const today = new Date().toDateString();
-    const saved = localStorage.getItem(`daily-challenge-${today}`);
-    const completedStatus = localStorage.getItem(`challenge-completed-${today}`);
-    
-    if (saved) {
-      setChallenge(saved);
-      setIsCompleted(completedStatus === 'true');
-    } else {
-      const randomChallenge = dailyChallenges[Math.floor(Math.random() * dailyChallenges.length)];
-      setChallenge(randomChallenge);
-      localStorage.setItem(`daily-challenge-${today}`, randomChallenge);
-    }
-  }, []);
+    const today = new Date().toISOString().split('T')[0];
+    const challengeKey = `challenge-${currentChallenge.id}-${today}`;
+    const isCompleted = localStorage.getItem(challengeKey) === 'true';
+    setCompleted(isCompleted);
+  }, [currentChallenge.id]);
 
   const handleComplete = () => {
-    const today = new Date().toDateString();
-    setIsCompleted(true);
-    localStorage.setItem(`challenge-completed-${today}`, 'true');
+    const today = new Date().toISOString().split('T')[0];
+    const challengeKey = `challenge-${currentChallenge.id}-${today}`;
+    localStorage.setItem(challengeKey, 'true');
+    setCompleted(true);
   };
 
   return (
-    <GlassCard className="p-4">
-      <div className="flex items-start space-x-3">
-        <div className="mt-1">
-          <Target className="w-5 h-5 text-warning" />
+    <GlassCard className="p-6 hover-lift animate-smooth">
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Target className="w-5 h-5 text-primary" />
+            <h3 className="font-semibold text-foreground">Today's Challenge</h3>
+          </div>
+          <Badge className={getDifficultyBadge(currentChallenge.difficulty)}>
+            {currentChallenge.difficulty}
+          </Badge>
         </div>
         
-        <div className="flex-1">
-          <h3 className="font-semibold text-foreground text-sm mb-1">
-            Daily Challenge
-          </h3>
-          <p className="text-muted-foreground text-sm mb-3">
-            {challenge}
-          </p>
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3">
+            <span className="text-2xl">{currentChallenge.emoji}</span>
+            <div>
+              <h4 className="font-medium text-foreground">{currentChallenge.title}</h4>
+              <p className="text-sm text-muted-foreground">{currentChallenge.description}</p>
+            </div>
+          </div>
           
-          {!isCompleted ? (
-            <Button
+          {!completed ? (
+            <Button 
               onClick={handleComplete}
-              size="sm"
-              className="text-xs"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
             >
-              Mark Complete
+              <Clock className="w-4 h-4 mr-2" />
+              Mark as Complete
             </Button>
           ) : (
-            <div className="flex items-center space-x-2 text-success">
-              <CheckCircle className="w-4 h-4" />
-              <span className="text-sm font-medium">Completed! 🎉</span>
-            </div>
+            <Button 
+              disabled 
+              className="w-full bg-success/20 text-success hover:bg-success/20"
+            >
+              <CheckCircle className="w-4 h-4 mr-2" />
+              Completed! 🎉
+            </Button>
           )}
         </div>
       </div>

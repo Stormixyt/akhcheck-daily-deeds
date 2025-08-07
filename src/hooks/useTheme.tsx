@@ -20,14 +20,24 @@ const themeColors = {
 };
 
 export const useTheme = () => {
-  const { preferences } = useUserData();
+  const { preferences, updatePreferences } = useUserData();
 
   useEffect(() => {
     const theme = preferences?.theme || 'green';
+    const darkMode = preferences?.dark_mode || false;
     const colors = themeColors[theme as keyof typeof themeColors];
     
     if (colors) {
       const root = document.documentElement;
+      
+      // Apply dark/light mode
+      if (darkMode) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+      
+      // Apply color theme
       root.style.setProperty('--primary', colors.primary);
       root.style.setProperty('--primary-glow', colors.primaryGlow);
       root.style.setProperty('--accent', colors.accent);
@@ -38,7 +48,21 @@ export const useTheme = () => {
         `linear-gradient(135deg, hsl(${colors.primary}) 0%, hsl(${colors.primaryGlow}) 50%, hsl(${colors.accent}) 100%)`
       );
     }
-  }, [preferences?.theme]);
+  }, [preferences?.theme, preferences?.dark_mode]);
 
-  return { theme: preferences?.theme || 'green' };
+  const toggleDarkMode = async () => {
+    const newDarkMode = !preferences?.dark_mode;
+    await updatePreferences({ dark_mode: newDarkMode });
+  };
+
+  const changeTheme = async (newTheme: 'green' | 'blue' | 'purple') => {
+    await updatePreferences({ theme: newTheme });
+  };
+
+  return { 
+    theme: preferences?.theme || 'green', 
+    darkMode: preferences?.dark_mode || false,
+    toggleDarkMode,
+    changeTheme,
+  };
 };

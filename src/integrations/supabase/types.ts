@@ -291,6 +291,7 @@ export type Database = {
           anonymous_mode: boolean
           created_at: string
           daily_reminder: boolean
+          dark_mode: boolean
           has_seen_v11_update: boolean
           has_seen_v12_update: boolean
           id: string
@@ -304,6 +305,7 @@ export type Database = {
           anonymous_mode?: boolean
           created_at?: string
           daily_reminder?: boolean
+          dark_mode?: boolean
           has_seen_v11_update?: boolean
           has_seen_v12_update?: boolean
           id?: string
@@ -317,6 +319,7 @@ export type Database = {
           anonymous_mode?: boolean
           created_at?: string
           daily_reminder?: boolean
+          dark_mode?: boolean
           has_seen_v11_update?: boolean
           has_seen_v12_update?: boolean
           id?: string
