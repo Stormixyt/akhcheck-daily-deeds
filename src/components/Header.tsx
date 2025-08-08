@@ -1,6 +1,7 @@
 import { Bell, Settings, User, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { TranslateButton } from "@/hooks/useTranslation";
 
 interface HeaderProps {
   username: string;
@@ -23,6 +24,7 @@ export const Header = ({ username }: HeaderProps) => {
         </div>
         
         <div className="flex items-center space-x-2">
+          <TranslateButton />
           <Button 
             variant="ghost" 
             size="icon" 

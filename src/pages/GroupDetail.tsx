@@ -369,7 +369,7 @@ export const GroupDetail = () => {
     try {
       const today = new Date().toISOString().split('T')[0];
       
-      // Record check-in
+      // Record group check-in
       const { error: checkInError } = await supabase
         .from('daily_check_ins')
         .insert({
@@ -381,10 +381,27 @@ export const GroupDetail = () => {
 
       if (checkInError) throw checkInError;
 
+      // Also record personal check-in to sync with main system
+      const { error: personalCheckInError } = await supabase
+        .from('daily_check_ins')
+        .upsert({
+          user_id: user?.id,
+          group_id: null, // Personal check-in has no group_id
+          status,
+          check_date: today
+        }, {
+          onConflict: 'user_id,check_date',
+          ignoreDuplicates: false
+        });
+
+      if (personalCheckInError) {
+        console.error('Personal check-in error:', personalCheckInError);
+      }
+
       // Send system message
       const systemMessage = status === 'disciplined' 
         ? `${profile?.display_name} stayed disciplined today 💪`
-        : `${profile?.display_name} gooned today 💀`;
+        : `${profile?.display_name} had a setback today`;
 
       await supabase
         .from('group_messages')
