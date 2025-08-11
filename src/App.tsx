@@ -14,6 +14,7 @@ import { Groups } from "./pages/Groups";
 import { GroupDetail } from "./pages/GroupDetail";
 import { AuthProvider } from "./hooks/useAuth";
 import { useTheme } from "./hooks/useTheme";
+import { TranslationProvider } from "./hooks/useTranslation";
 import NotFound from "./pages/NotFound";
 
 const AppContent = () => {
@@ -46,9 +47,11 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <TranslationProvider>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
+    </TranslationProvider>
   </QueryClientProvider>
 );
 
