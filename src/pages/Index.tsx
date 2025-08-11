@@ -126,12 +126,12 @@ const Index = () => {
 
   useEffect(() => {
     if (!authLoading && !user) {
-      navigate("/auth-choice");
+      navigate("/auth-choice", { replace: true });
       return;
     }
 
     if (!profileLoading && profile && !profile.onboarding_completed) {
-      navigate("/onboarding");
+      navigate("/onboarding", { replace: true });
       return;
     }
   }, [user, profile, authLoading, profileLoading, navigate]);
