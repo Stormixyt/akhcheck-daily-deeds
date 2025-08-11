@@ -6,9 +6,11 @@ import { Label } from "@/components/ui/label";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useNavigate } from "react-router-dom";
 import { useUserData } from "@/hooks/useUserData";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export const EditProfile = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { profile, updateProfile } = useUserData();
   const [displayName, setDisplayName] = useState(profile?.display_name || "");
   const [saving, setSaving] = useState(false);
@@ -35,7 +37,7 @@ export const EditProfile = () => {
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-lg font-semibold text-foreground">Edit Profile</h1>
+          <h1 className="text-lg font-semibold text-foreground">{t('edit_profile')}</h1>
           <div className="w-10" />
         </div>
       </header>
@@ -44,7 +46,7 @@ export const EditProfile = () => {
         <GlassCard className="p-6">
           <div className="space-y-4">
             <div>
-              <Label htmlFor="displayName">Display Name</Label>
+              <Label htmlFor="displayName">{t('display_name')}</Label>
               <Input
                 id="displayName"
                 value={displayName}
@@ -54,7 +56,7 @@ export const EditProfile = () => {
             </div>
 
             <div>
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email">{t('email')}</Label>
               <Input
                 id="email"
                 value={profile?.email || ""}
@@ -62,7 +64,7 @@ export const EditProfile = () => {
                 className="opacity-60"
               />
               <p className="text-xs text-muted-foreground mt-1">
-                Email cannot be changed
+                {t('email_cannot_change')}
               </p>
             </div>
 
@@ -72,14 +74,14 @@ export const EditProfile = () => {
                 onClick={() => navigate("/settings")}
                 className="flex-1"
               >
-                Cancel
+                {t('cancel')}
               </Button>
               <Button
                 onClick={handleSave}
                 disabled={saving || !displayName.trim()}
                 className="flex-1"
               >
-                {saving ? "Saving..." : "Save"}
+                {saving ? t('saving') : t('save')}
               </Button>
             </div>
           </div>

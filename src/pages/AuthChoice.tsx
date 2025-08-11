@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
+import { useTranslation } from "@/hooks/useTranslation";
 
 export const AuthChoice = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   return (
     <div className="min-h-screen flex items-center justify-center p-6">
@@ -19,7 +21,7 @@ export const AuthChoice = () => {
           <h1 className="text-4xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-slide-in-right stagger-2">
             AkhCheck
           </h1>
-          <p className="text-muted-foreground text-lg animate-slide-in-right stagger-3">Stay disciplined, stay sincere</p>
+          <p className="text-muted-foreground text-lg animate-slide-in-right stagger-3">{t('stay_disciplined')}</p>
         </div>
 
         {/* Auth Options */}
@@ -29,7 +31,7 @@ export const AuthChoice = () => {
             className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient animate-gradient glow-primary hover-lift animate-smooth animate-slide-in-right stagger-4"
             size="lg"
           >
-            Create Account
+            {t('create_account')}
           </Button>
           
           <Button
@@ -38,13 +40,13 @@ export const AuthChoice = () => {
             className="w-full h-16 rounded-3xl text-lg font-semibold border-2 glass-card hover-lift animate-smooth animate-slide-in-right stagger-5"
             size="lg"
           >
-            Sign In
+            {t('sign_in')}
           </Button>
         </div>
 
         <div className="text-center animate-fade-in-up stagger-5">
           <p className="text-sm text-muted-foreground leading-relaxed px-4">
-            By continuing, you agree to be honest with yourself and Allah
+            {t('honest_agreement')}
           </p>
         </div>
       </div>

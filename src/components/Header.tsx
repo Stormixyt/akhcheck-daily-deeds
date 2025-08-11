@@ -1,7 +1,7 @@
 import { Bell, Settings, User, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useNavigate } from "react-router-dom";
-import { TranslateButton } from "@/hooks/useTranslation";
+import { TranslateButton, useTranslation } from "@/hooks/useTranslation";
 
 interface HeaderProps {
   username: string;
@@ -9,6 +9,7 @@ interface HeaderProps {
 
 export const Header = ({ username }: HeaderProps) => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   
   return (
     <header className="bg-card/50 backdrop-blur-md border-b border-border p-4 sticky top-0 z-10">
@@ -19,7 +20,7 @@ export const Header = ({ username }: HeaderProps) => {
           </div>
           <div>
             <h1 className="text-lg font-bold text-foreground">AkhCheck</h1>
-            <p className="text-sm text-muted-foreground">As-salamu alaykum, {username}</p>
+            <p className="text-sm text-muted-foreground">{t('as_salamu_alaykum')}, {username}</p>
           </div>
         </div>
         

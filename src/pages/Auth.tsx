@@ -7,6 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Chrome } from "lucide-react";
 
 export const Auth = () => {
@@ -18,6 +19,7 @@ export const Auth = () => {
   const [displayName, setDisplayName] = useState("");
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -52,13 +54,13 @@ export const Auth = () => {
         });
         if (error) throw error;
         toast({
-          title: "Success",
+          title: t('success'),
           description: "Account created! Please check your email to verify your account.",
         });
       }
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t('error'),
         description: error.message,
         variant: "destructive",
       });
@@ -78,7 +80,7 @@ export const Auth = () => {
       if (error) throw error;
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t('error'),
         description: error.message,
         variant: "destructive",
       });
@@ -96,10 +98,10 @@ export const Auth = () => {
             </div>
           </div>
           <h1 className="text-3xl font-bold text-foreground mb-3 bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-slide-in-right stagger-2">
-            {isLogin ? "Welcome Back" : "Create Account"}
+            {isLogin ? t('welcome_back') : t('create_account')}
           </h1>
           <p className="text-muted-foreground text-base animate-slide-in-right stagger-3">
-            {isLogin ? "Welcome back, akhi" : "Join the AkhCheck community"}
+            {isLogin ? t('welcome_back_akhi') : t('join_community')}
           </p>
         </div>
 
@@ -107,7 +109,7 @@ export const Auth = () => {
           <form onSubmit={handleSubmit} className="space-y-5">
             {!isLogin && (
               <div className="space-y-3 animate-slide-in-right stagger-4">
-                <Label htmlFor="displayName" className="text-base font-medium text-foreground">Display Name</Label>
+                <Label htmlFor="displayName" className="text-base font-medium text-foreground">{t('display_name')}</Label>
                 <Input
                   id="displayName"
                   type="text"
@@ -121,7 +123,7 @@ export const Auth = () => {
             )}
             
             <div className="space-y-3 animate-slide-in-right stagger-4">
-              <Label htmlFor="email" className="text-base font-medium text-foreground">Email</Label>
+              <Label htmlFor="email" className="text-base font-medium text-foreground">{t('email')}</Label>
               <Input
                 id="email"
                 type="email"
@@ -134,7 +136,7 @@ export const Auth = () => {
             </div>
 
             <div className="space-y-3 animate-slide-in-right stagger-5">
-              <Label htmlFor="password" className="text-base font-medium text-foreground">Password</Label>
+              <Label htmlFor="password" className="text-base font-medium text-foreground">{t('password')}</Label>
               <Input
                 id="password"
                 type="password"
@@ -164,7 +166,7 @@ export const Auth = () => {
                 e.currentTarget.style.boxShadow = 'var(--shadow-glow)';
               }}
             >
-              {loading ? "Loading..." : isLogin ? "Sign In" : "Create Account"}
+              {loading ? t('loading') : isLogin ? t('sign_in') : t('create_account')}
             </Button>
           </form>
 
@@ -203,14 +205,14 @@ export const Auth = () => {
 
           <div className="text-center pt-6">
             <p className="text-muted-foreground text-base mb-2">
-              {isLogin ? "Don't have an account?" : "Already have an account?"}
+              {isLogin ? t('dont_have_account') : t('already_have_account')}
             </p>
             <Button
               variant="link"
               onClick={() => setIsLogin(!isLogin)}
               className="text-primary font-semibold text-base p-0 h-auto hover:text-accent animate-smooth"
             >
-              {isLogin ? "Sign up" : "Sign in"}
+              {isLogin ? t('sign_up') : t('sign_in')}
             </Button>
           </div>
         </div>
