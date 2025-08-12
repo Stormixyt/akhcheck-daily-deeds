@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useAuth } from './useAuth';
@@ -8,6 +9,7 @@ export interface UserProfile {
   user_id: string;
   display_name: string;
   email: string | null;
+  avatar_url?: string | null;
   onboarding_completed?: boolean;
 }
 
@@ -22,6 +24,14 @@ export interface UserPreferences {
   dark_mode?: boolean;
   has_seen_v11_update: boolean;
   has_seen_v12_update: boolean;
+  // v2.2 new fields
+  premium: boolean;
+  quiet_mode: boolean;
+  private_mode: boolean;
+  public_accountability: boolean;
+  auto_logout_minutes: number;
+  blur_intensity: number;
+  font_choice: string;
 }
 
 export interface UserGoal {
@@ -31,6 +41,37 @@ export interface UserGoal {
   completed: boolean;
   is_default: boolean;
   completed_at: string | null;
+  // v2.2 lock-in mode
+  locked_until: string | null;
+  lock_reason: string | null;
+}
+
+export interface StreakRevivalTokens {
+  id: string;
+  user_id: string;
+  tokens_available: number;
+  tokens_used: number;
+  last_earned_at: string | null;
+}
+
+export interface FastingEntry {
+  id: string;
+  user_id: string;
+  fast_date: string;
+  fast_type: 'ramadan' | 'voluntary' | 'makeup' | 'sunnah';
+  completed: boolean;
+  broken_reason?: string | null;
+}
+
+export interface PrayerEntry {
+  id: string;
+  user_id: string;
+  prayer_date: string;
+  fajr: boolean;
+  dhuhr: boolean;
+  asr: boolean;
+  maghrib: boolean;
+  isha: boolean;
 }
 
 export const useUserData = () => {
@@ -39,6 +80,7 @@ export const useUserData = () => {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [preferences, setPreferences] = useState<UserPreferences | null>(null);
   const [goals, setGoals] = useState<UserGoal[]>([]);
+  const [revivalTokens, setRevivalTokens] = useState<StreakRevivalTokens | null>(null);
   const [loading, setLoading] = useState(true);
 
   const fetchUserData = async () => {
@@ -81,9 +123,21 @@ export const useUserData = () => {
         throw goalsError;
       }
 
+      // Fetch revival tokens
+      const { data: tokensData, error: tokensError } = await supabase
+        .from('streak_revival_tokens')
+        .select('*')
+        .eq('user_id', user.id)
+        .single();
+
+      if (tokensError && tokensError.code !== 'PGRST116') {
+        console.log('No revival tokens found, will be created on first use');
+      }
+
       setProfile(profileData);
       setPreferences(preferencesData as UserPreferences);
       setGoals(goalsData || []);
+      setRevivalTokens(tokensData);
     } catch (error: any) {
       console.error('Error fetching user data:', error);
       toast({
@@ -208,6 +262,50 @@ export const useUserData = () => {
     }
   };
 
+  const lockGoal = async (goalId: string, lockDays: number, reason: string) => {
+    if (!user) return;
+
+    const lockUntil = new Date();
+    lockUntil.setDate(lockUntil.getDate() + lockDays);
+
+    try {
+      const { error } = await supabase
+        .from('user_goals')
+        .update({
+          locked_until: lockUntil.toISOString().split('T')[0],
+          lock_reason: reason,
+        })
+        .eq('id', goalId)
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      setGoals(prev =>
+        prev.map(goal =>
+          goal.id === goalId
+            ? { 
+                ...goal, 
+                locked_until: lockUntil.toISOString().split('T')[0],
+                lock_reason: reason 
+              }
+            : goal
+        )
+      );
+
+      toast({
+        title: "Goal Locked",
+        description: `Goal locked for ${lockDays} days. Stay strong!`,
+      });
+    } catch (error: any) {
+      console.error('Error locking goal:', error);
+      toast({
+        title: "Error",
+        description: "Failed to lock goal",
+        variant: "destructive",
+      });
+    }
+  };
+
   const deleteGoal = async (goalId: string) => {
     try {
       const { error } = await supabase
@@ -232,6 +330,43 @@ export const useUserData = () => {
     }
   };
 
+  const useRevivalToken = async () => {
+    if (!user || !revivalTokens || revivalTokens.tokens_available <= 0) return false;
+
+    try {
+      const { error } = await supabase
+        .from('streak_revival_tokens')
+        .update({
+          tokens_available: revivalTokens.tokens_available - 1,
+          tokens_used: revivalTokens.tokens_used + 1,
+        })
+        .eq('user_id', user.id);
+
+      if (error) throw error;
+
+      setRevivalTokens(prev => prev ? {
+        ...prev,
+        tokens_available: prev.tokens_available - 1,
+        tokens_used: prev.tokens_used + 1,
+      } : null);
+
+      toast({
+        title: "Streak Revived! ❤️‍🔥",
+        description: "Your streak has been restored. Use this chance wisely!",
+      });
+
+      return true;
+    } catch (error: any) {
+      console.error('Error using revival token:', error);
+      toast({
+        title: "Error",
+        description: "Failed to use revival token",
+        variant: "destructive",
+      });
+      return false;
+    }
+  };
+
   useEffect(() => {
     fetchUserData();
   }, [user]);
@@ -240,12 +375,15 @@ export const useUserData = () => {
     profile,
     preferences,
     goals,
+    revivalTokens,
     loading,
     updateProfile,
     updatePreferences,
     addGoal,
     toggleGoal,
+    lockGoal,
     deleteGoal,
+    useRevivalToken,
     refetch: fetchUserData,
   };
 };
