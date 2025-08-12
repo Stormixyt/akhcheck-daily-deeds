@@ -9,6 +9,7 @@ import { useUserData } from "@/hooks/useUserData";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import { useTranslation } from "@/hooks/useTranslation";
 import { Users, Plus, Hash, MessageCircle, Flame } from "lucide-react";
 
 interface Group {
@@ -26,6 +27,7 @@ export const Groups = () => {
   const { profile, loading: profileLoading } = useUserData();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { t } = useTranslation();
   const [groups, setGroups] = useState<Group[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateForm, setShowCreateForm] = useState(false);
@@ -82,13 +84,17 @@ export const Groups = () => {
       setGroups(groupsWithStats);
     } catch (error: any) {
       toast({
-        title: "Error",
-        description: "Failed to load groups",
+        title: t('error'),
+        description: t('failed_to_load_groups'),
         variant: "destructive",
       });
     } finally {
       setLoading(false);
     }
+  };
+
+  const generateGroupCode = () => {
+    return Math.random().toString(36).substring(2, 10).toLowerCase();
   };
 
   const createGroup = async () => {
@@ -98,10 +104,12 @@ export const Groups = () => {
     console.log('Group name:', groupName.trim());
 
     try {
+      const groupCode = generateGroupCode();
       const { data: groupData, error: groupError } = await supabase
         .from('groups')
         .insert({
           name: groupName.trim(),
+          code: groupCode,
           created_by: user?.id
         })
         .select()
@@ -132,8 +140,8 @@ export const Groups = () => {
       if (streakError) throw streakError;
 
       toast({
-        title: "Success",
-        description: "Group created successfully!",
+        title: t('success'),
+        description: t('group_created_successfully'),
       });
 
       setShowCreateForm(false);
@@ -142,8 +150,8 @@ export const Groups = () => {
     } catch (error: any) {
       console.error('Group creation error:', error);
       toast({
-        title: "Error",
-        description: error.message || "Failed to create group",
+        title: t('error'),
+        description: error.message || t('failed_to_create_group'),
         variant: "destructive",
       });
     }
@@ -162,7 +170,7 @@ export const Groups = () => {
 
       if (groupError) throw groupError;
       if (!groupData) {
-        throw new Error("Group not found");
+        throw new Error(t('group_not_found'));
       }
 
       // Check if already a member
@@ -174,7 +182,7 @@ export const Groups = () => {
         .single();
 
       if (existingMember) {
-        throw new Error("You are already a member of this group");
+        throw new Error(t('already_member_of_group'));
       }
 
       // Add as member
@@ -189,8 +197,8 @@ export const Groups = () => {
       if (memberError) throw memberError;
 
       toast({
-        title: "Success",
-        description: `Joined ${groupData.name} successfully!`,
+        title: t('success'),
+        description: t('joined_group_successfully').replace('{groupName}', groupData.name),
       });
 
       setShowJoinForm(false);
@@ -198,7 +206,7 @@ export const Groups = () => {
       fetchUserGroups();
     } catch (error: any) {
       toast({
-        title: "Error",
+        title: t('error'),
         description: error.message,
         variant: "destructive",
       });
@@ -210,7 +218,7 @@ export const Groups = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground mt-2">Loading...</p>
+          <p className="text-muted-foreground mt-2">{t('loading')}</p>
         </div>
       </div>
     );
@@ -225,9 +233,9 @@ export const Groups = () => {
       <main className="max-w-sm mx-auto p-6 space-y-6">
         <div className="text-center space-y-2">
           <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            Brotherhood Groups
+            {t('brotherhood_groups')}
           </h1>
-          <p className="text-muted-foreground">Stay disciplined with your squad</p>
+          <p className="text-muted-foreground">{t('stay_disciplined_with_squad')}</p>
         </div>
 
         {/* Action Buttons */}
@@ -238,7 +246,7 @@ export const Groups = () => {
             variant="outline"
           >
             <Plus className="w-4 h-4 mr-2" />
-            Create Group
+            {t('create_group')}
           </Button>
           <Button
             onClick={() => setShowJoinForm(true)}
@@ -246,7 +254,7 @@ export const Groups = () => {
             variant="outline"
           >
             <Hash className="w-4 h-4 mr-2" />
-            Join Group
+            {t('join_group')}
           </Button>
         </div>
 
@@ -254,36 +262,36 @@ export const Groups = () => {
         <GlassCard className="p-4 bg-accent/5 border-accent/20">
           <h3 className="font-semibold text-foreground mb-2 flex items-center">
             <Hash className="w-4 h-4 mr-2 text-accent" />
-            How to Join a Group
+            {t('how_to_join_group')}
           </h3>
           <div className="text-sm text-muted-foreground space-y-1">
-            <p>🔹 Ask your friends for their <strong>Group Code</strong></p>
-            <p>🔹 Group codes work anywhere - no same network needed!</p>
-            <p>🔹 Each group has a unique 8-character code</p>
-            <p>🔹 Your group codes are shown below each group name</p>
+            <p>🔹 {t('ask_friends_for_code')}</p>
+            <p>🔹 {t('group_codes_work_anywhere')}</p>
+            <p>🔹 {t('unique_8_character_code')}</p>
+            <p>🔹 {t('group_codes_shown_below')}</p>
           </div>
         </GlassCard>
 
         {/* Create Group Form */}
         {showCreateForm && (
           <GlassCard className="p-4 space-y-4">
-            <h3 className="font-semibold text-foreground">Create New Group</h3>
+            <h3 className="font-semibold text-foreground">{t('create_new_group')}</h3>
             <div className="space-y-2">
-              <Label htmlFor="groupName">Group Name</Label>
+              <Label htmlFor="groupName">{t('group_name')}</Label>
               <Input
                 id="groupName"
                 value={groupName}
                 onChange={(e) => setGroupName(e.target.value)}
-                placeholder="Halal Squad"
+                placeholder={t('group_name_placeholder')}
                 className="glass-card"
               />
             </div>
             <div className="flex space-x-2">
               <Button onClick={createGroup} className="flex-1" disabled={!groupName.trim()}>
-                Create
+                {t('create')}
               </Button>
               <Button onClick={() => setShowCreateForm(false)} variant="outline" className="flex-1">
-                Cancel
+                {t('cancel')}
               </Button>
             </div>
           </GlassCard>
@@ -292,27 +300,27 @@ export const Groups = () => {
         {/* Join Group Form */}
         {showJoinForm && (
           <GlassCard className="p-4 space-y-4">
-            <h3 className="font-semibold text-foreground">Join Group</h3>
+            <h3 className="font-semibold text-foreground">{t('join_group')}</h3>
             <div className="space-y-2">
-              <Label htmlFor="groupCode">Group Code</Label>
+              <Label htmlFor="groupCode">{t('group_code')}</Label>
               <Input
                 id="groupCode"
                 value={groupCode}
                 onChange={(e) => setGroupCode(e.target.value.toLowerCase())}
-                placeholder="e.g. abc123de"
+                placeholder={t('group_code_placeholder')}
                 className="glass-card font-mono"
                 maxLength={8}
               />
               <p className="text-xs text-muted-foreground">
-                💡 Ask your friends to share their group code with you
+                💡 {t('ask_friends_share_code')}
               </p>
             </div>
             <div className="flex space-x-2">
               <Button onClick={joinGroup} className="flex-1" disabled={!groupCode.trim()}>
-                Join Brotherhood
+                {t('join_brotherhood')}
               </Button>
               <Button onClick={() => setShowJoinForm(false)} variant="outline" className="flex-1">
-                Cancel
+                {t('cancel')}
               </Button>
             </div>
           </GlassCard>
@@ -323,13 +331,13 @@ export const Groups = () => {
           {loading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
-              <p className="text-muted-foreground mt-2">Loading groups...</p>
+              <p className="text-muted-foreground mt-2">{t('loading_groups')}</p>
             </div>
           ) : groups.length === 0 ? (
             <GlassCard className="p-6 text-center">
               <Users className="w-12 h-12 text-muted-foreground mx-auto mb-3" />
-              <h3 className="font-semibold text-foreground mb-2">No groups yet</h3>
-              <p className="text-muted-foreground text-sm">Create or join a group to get started</p>
+              <h3 className="font-semibold text-foreground mb-2">{t('no_groups_yet')}</h3>
+              <p className="text-muted-foreground text-sm">{t('create_or_join_group')}</p>
             </GlassCard>
           ) : (
             groups.map((group) => (
@@ -348,14 +356,14 @@ export const Groups = () => {
                       </div>
                       <div className="flex items-center space-x-1">
                         <Flame className="w-4 h-4" />
-                        <span>{group.current_streak} days</span>
+                        <span>{group.current_streak} {t('days')}</span>
                       </div>
                     </div>
                     <div className="mt-2 p-2 bg-accent/10 rounded-lg border border-accent/20">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-1">
                           <Hash className="w-3 h-3 text-accent" />
-                          <span className="text-xs text-muted-foreground">Share this code:</span>
+                          <span className="text-xs text-muted-foreground">{t('share_this_code')}</span>
                         </div>
                         <span className="font-mono text-sm font-semibold text-accent">{group.code}</span>
                       </div>
