@@ -27,6 +27,7 @@ const translations = {
     'stay_disciplined': 'Stay disciplined, stay sincere',
     'create_account': 'Create Account',
     'sign_in': 'Sign In',
+    'sign_out': 'Sign Out',
     'honest_agreement': 'By continuing, you agree to be honest with yourself and Allah',
     'display_name': 'Display Name',
     'email': 'Email',
@@ -48,6 +49,9 @@ const translations = {
     'light': 'Light',
     'dark': 'Dark',
     'color_theme': 'Color Theme',
+    'you': 'You',
+    'quran_verse': '"And whoever fears Allah - He will make for him a way out."',
+    'quran_reference': '— Quran 65:2',
     
     // Home page
     'daily_challenge': "Today's Challenge",
@@ -111,6 +115,17 @@ const translations = {
     'hours_ago': 'hours ago',
     'days_ago': 'days ago',
     
+    // Settings
+    'anonymous_mode': 'Anonymous Mode',
+    'hide_status_from_friends': 'Hide your status from friends',
+    'repeat_warnings': 'Repeat Warnings',
+    'show_sin_warning_every_time': 'Show sin warning every time',
+    'daily_reminder': 'Daily Reminder',
+    'get_reminded_to_check_in': 'Get reminded to check in',
+    'reminder_time': 'Reminder Time',
+    'daily_goals': 'Daily Goals',
+    'add_custom_goal': 'Add custom goal...',
+    
     // Motivational
     'alhamdulillah': 'Alhamdulillah! 🤲',
     'dont_give_up': "Don't give up 💚",
@@ -128,6 +143,24 @@ const translations = {
     'translate_button': '🌍 Translate button (EN/NL)',
     'sync_fixes': '🔧 Sync fixes & UI improvements',
     'lets_lock_in': "Let's Lock In 🔥",
+
+    // Onboarding
+    'welcome_to_akhcheck': 'Welcome to AkhCheck 👋',
+    'onboarding_intro': 'Your daily halal bro-check. Stay hard, stay disciplined, stay sincere.',
+    'track_your_progress': 'Track Your Progress',
+    'onboarding_tracking': 'Check in every day: did you goon or did you fail? But be honest – for yourself and for Allah.',
+    'add_some_friends': "Let's Add Some Friends!",
+    'onboarding_friends': 'Motivation is stronger with your brothers. Add friends you trust.',
+    'onboarding_warning': '⚠️ Never share sins with just anyone.',
+    'onboarding_hadith': 'The Prophet ﷺ said: "Everyone from my ummah will be forgiven, except those who openly confess their sins." (Bukhari 6069)',
+    'set_goals_get_reminders': 'Set Goals, Get Reminders',
+    'onboarding_goals': 'Choose your daily goals. Receive verses from the Quran as motivation. Allah helps those who persevere.',
+    'youre_ready_akhi': "You're ready, Akhi 😤",
+    'onboarding_ready': 'Take on the challenge. Every day is a new chance to become better.',
+    'add_friend': 'Add Friend',
+    'i_understand': 'I understand',
+    'enter_the_app': 'Enter the App',
+    'next': 'Next',
   },
   nl: {
     // General
@@ -144,6 +177,7 @@ const translations = {
     'stay_disciplined': 'Blijf gedisciplineerd, blijf oprecht',
     'create_account': 'Account Aanmaken',
     'sign_in': 'Inloggen',
+    'sign_out': 'Uitloggen',
     'honest_agreement': 'Door door te gaan, ga je ermee akkoord eerlijk te zijn tegen jezelf en Allah',
     'display_name': 'Weergavenaam',
     'email': 'E-mail',
@@ -165,6 +199,9 @@ const translations = {
     'light': 'Licht',
     'dark': 'Donker',
     'color_theme': 'Kleurthema',
+    'you': 'Jij',
+    'quran_verse': '"En wie Allah vreest - Hij zal voor hem een uitweg maken."',
+    'quran_reference': '— Koran 65:2',
     
     // Home page
     'daily_challenge': 'Dagelijkse Uitdaging',
@@ -228,6 +265,17 @@ const translations = {
     'hours_ago': 'uur geleden',
     'days_ago': 'dagen geleden',
     
+    // Settings
+    'anonymous_mode': 'Anonieme Modus',
+    'hide_status_from_friends': 'Verberg je status voor vrienden',
+    'repeat_warnings': 'Herhaalde Waarschuwingen',
+    'show_sin_warning_every_time': 'Toon zonde waarschuwing elke keer',
+    'daily_reminder': 'Dagelijkse Herinnering',
+    'get_reminded_to_check_in': 'Krijg een herinnering om in te checken',
+    'reminder_time': 'Herinneringstijd',
+    'daily_goals': 'Dagelijkse Doelen',
+    'add_custom_goal': 'Aangepast doel toevoegen...',
+    
     // Motivational
     'alhamdulillah': 'Alhamdulillah! 🤲',
     'dont_give_up': 'Geef niet op 💚',
@@ -245,6 +293,24 @@ const translations = {
     'translate_button': '🌍 Vertaal knop (EN/NL)',
     'sync_fixes': '🔧 Sync fixes & UI verbeteringen',
     'lets_lock_in': "Laten we Lock In 🔥",
+
+    // Onboarding
+    'welcome_to_akhcheck': 'Welkom bij AkhCheck 👋',
+    'onboarding_intro': 'Jouw dagelijkse halal bro-check. Stay hard, stay disciplined, stay sincere.',
+    'track_your_progress': 'Volg Je Voortgang',
+    'onboarding_tracking': 'Check elke dag in: ben je gegooned of heb je gefaald? Maar wees eerlijk – voor jezelf én voor Allah.',
+    'add_some_friends': 'Laten We Wat Vrienden Toevoegen!',
+    'onboarding_friends': 'Motivatie is sterker met je broeders. Voeg vrienden toe die je vertrouwt.',
+    'onboarding_warning': '⚠️ Deel nooit zonden met zomaar iemand.',
+    'onboarding_hadith': 'De Profeet ﷺ zei: "Iedereen uit mijn ummah zal worden vergeven, behalve degenen die hun zonden openlijk bekennen." (Bukhari 6069)',
+    'set_goals_get_reminders': 'Stel Doelen In, Krijg Herinneringen',
+    'onboarding_goals': 'Kies jouw dagelijkse doelen. Ontvang ayah\'s uit de Koran als motivatie. Allah helpt de volhouders.',
+    'youre_ready_akhi': 'Je bent klaar, Akhi 😤',
+    'onboarding_ready': 'Ga de uitdaging aan. Elke dag is een nieuwe kans om beter te worden.',
+    'add_friend': 'Vriend Toevoegen',
+    'i_understand': 'Ik begrijp het',
+    'enter_the_app': 'App Betreden',
+    'next': 'Volgende',
   }
 };
 

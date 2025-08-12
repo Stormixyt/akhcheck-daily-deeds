@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { ArrowLeft, User, Bell, Target, Palette, Plus, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,10 +9,12 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { useUserData } from "@/hooks/useUserData";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Settings = () => {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const { user } = useAuth();
   const { profile, preferences, goals, updatePreferences, addGoal, toggleGoal, deleteGoal, loading } = useUserData();
   const [newGoal, setNewGoal] = useState("");
@@ -41,7 +44,7 @@ export const Settings = () => {
   if (loading) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
-        <div className="text-foreground">Loading...</div>
+        <div className="text-foreground">{t('loading')}</div>
       </div>
     );
   }
@@ -59,14 +62,14 @@ export const Settings = () => {
           >
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-lg font-semibold text-foreground">Settings</h1>
+          <h1 className="text-lg font-semibold text-foreground">{t('settings')}</h1>
           <Button 
             variant="ghost" 
             size="sm" 
             onClick={handleSignOut}
             className="text-muted-foreground hover:text-foreground"
           >
-            Sign Out
+            {t('sign_out')}
           </Button>
         </div>
       </header>
@@ -76,7 +79,7 @@ export const Settings = () => {
         <GlassCard className="p-6">
           <div className="flex items-center space-x-3 mb-4">
             <User className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">Profile</h2>
+            <h2 className="text-lg font-semibold text-foreground">{t('profile')}</h2>
           </div>
           
           <div className="space-y-4">
@@ -92,15 +95,15 @@ export const Settings = () => {
             </div>
             
             <Button variant="outline" className="w-full" onClick={() => navigate("/edit-profile")}>
-              Edit Profile
+              {t('edit_profile')}
             </Button>
             
             <Separator />
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-foreground">Anonymous Mode</p>
-                <p className="text-sm text-muted-foreground">Hide your status from friends</p>
+                <p className="font-medium text-foreground">{t('anonymous_mode')}</p>
+                <p className="text-sm text-muted-foreground">{t('hide_status_from_friends')}</p>
               </div>
               <Switch 
                 checked={preferences?.anonymous_mode || false}
@@ -114,8 +117,8 @@ export const Settings = () => {
             
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-foreground">Repeat Warnings</p>
-                <p className="text-sm text-muted-foreground">Show sin warning every time</p>
+                <p className="font-medium text-foreground">{t('repeat_warnings')}</p>
+                <p className="text-sm text-muted-foreground">{t('show_sin_warning_every_time')}</p>
               </div>
               <Switch 
                 checked={preferences?.repeat_warnings || false}
@@ -131,14 +134,14 @@ export const Settings = () => {
         <GlassCard className="p-6">
           <div className="flex items-center space-x-3 mb-4">
             <Bell className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">Notifications</h2>
+            <h2 className="text-lg font-semibold text-foreground">{t('notifications')}</h2>
           </div>
           
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <div>
-                <p className="font-medium text-foreground">Daily Reminder</p>
-                <p className="text-sm text-muted-foreground">Get reminded to check in</p>
+                <p className="font-medium text-foreground">{t('daily_reminder')}</p>
+                <p className="text-sm text-muted-foreground">{t('get_reminded_to_check_in')}</p>
               </div>
               <Switch 
                 checked={preferences?.daily_reminder || false}
@@ -151,7 +154,7 @@ export const Settings = () => {
             {preferences?.daily_reminder && (
               <div>
                 <label className="block text-sm font-medium text-foreground mb-2">
-                  Reminder Time
+                  {t('reminder_time')}
                 </label>
                 <select
                   value={preferences?.reminder_time || "21:00"}
@@ -171,7 +174,7 @@ export const Settings = () => {
         <GlassCard className="p-6">
           <div className="flex items-center space-x-3 mb-4">
             <Target className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">Daily Goals</h2>
+            <h2 className="text-lg font-semibold text-foreground">{t('daily_goals')}</h2>
           </div>
           
           <div className="space-y-3">
@@ -199,7 +202,7 @@ export const Settings = () => {
             
             <div className="flex gap-2">
               <Input
-                placeholder="Add custom goal..."
+                placeholder={t('add_custom_goal')}
                 value={newGoal}
                 onChange={(e) => setNewGoal(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAddGoal()}
@@ -216,7 +219,7 @@ export const Settings = () => {
         <GlassCard className="p-6">
           <div className="flex items-center space-x-3 mb-4">
             <Palette className="w-5 h-5 text-primary" />
-            <h2 className="text-lg font-semibold text-foreground">Theme</h2>
+            <h2 className="text-lg font-semibold text-foreground">{t('theme_settings')}</h2>
           </div>
           
           <div className="space-y-3">

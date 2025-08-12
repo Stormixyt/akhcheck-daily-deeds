@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Header } from "@/components/Header";
 import { StatusCard } from "@/components/StatusCard";
@@ -9,6 +10,7 @@ import { UpdateLogDialog } from "@/components/UpdateLogDialog";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/useAuth";
+import { useTranslation } from "@/hooks/useTranslation";
 import { supabase } from "@/integrations/supabase/client";
 import { useUserData } from "@/hooks/useUserData";
 import { useNavigate } from "react-router-dom";
@@ -38,6 +40,7 @@ const dummyFriends = [
 const Index = () => {
   const { user, loading: authLoading } = useAuth();
   const { profile, loading: profileLoading } = useUserData();
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const [userStreak, setUserStreak] = useState(0);
   const [todayStatus, setTodayStatus] = useState<"gooned" | "disciplined" | null>(null);
@@ -141,7 +144,7 @@ const Index = () => {
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="text-muted-foreground mt-2">Loading...</p>
+          <p className="text-muted-foreground mt-2">{t('loading')}</p>
         </div>
       </div>
     );
@@ -174,16 +177,16 @@ const Index = () => {
         const newStreak = userStreak + 1;
         setUserStreak(newStreak);
         toast({
-          title: "Alhamdulillah! 🤲",
-          description: "Your streak continues! Keep it up, akhi.",
+          title: t('alhamdulillah'),
+          description: t('keep_going'),
           className: "bg-success text-success-foreground border-success",
         });
       } else {
         // Reset streak to 0
         setUserStreak(0);
         toast({
-          title: "Don't give up 💚",
-          description: "Tomorrow is a new chance. Make tawbah and restart.",
+          title: t('dont_give_up'),
+          description: t('tomorrow_new_chance'),
           className: "bg-destructive text-destructive-foreground border-destructive",
         });
       }
@@ -191,7 +194,7 @@ const Index = () => {
       console.error('Error saving check-in:', error);
       console.error('Full error object:', JSON.stringify(error, null, 2));
       toast({
-        title: "Error",
+        title: t('error'),
         description: error.message || "Failed to save your check-in. Please try again.",
         variant: "destructive",
       });
@@ -212,7 +215,7 @@ const Index = () => {
         {/* User's own status */}
         <div className="animate-slide-in-right stagger-2">
           <StatusCard
-            username="You"
+            username={t('you')}
             streak={userStreak}
             todayStatus={todayStatus}
             onStatusUpdate={handleStatusUpdate}
@@ -230,14 +233,13 @@ const Index = () => {
           <DailyChallenge />
         </div>
 
-
         {/* Daily reminder */}
         <div className="text-center p-6 glass-card rounded-3xl glow-primary hover-lift animate-smooth animate-slide-in-right stagger-6">
           <p className="text-base text-muted-foreground leading-relaxed mb-3">
-            "And whoever fears Allah - He will make for him a way out."
+            {t('quran_verse')}
           </p>
           <p className="text-sm text-primary font-semibold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            — Quran 65:2
+            {t('quran_reference')}
           </p>
         </div>
       </main>

@@ -1,42 +1,44 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { GlassCard } from "@/components/ui/glass-card";
 import { useNavigate } from "react-router-dom";
 import { useUserData } from "@/hooks/useUserData";
+import { useTranslation } from "@/hooks/useTranslation";
 import { CheckCircle, Users, Target, BookOpen, ArrowRight } from "lucide-react";
 
 const onboardingSlides = [
   {
     id: 1,
-    title: "Welcome to AkhCheck 👋",
-    content: "Jouw dagelijkse halal bro-check. Stay hard, stay disciplined, stay sincere.",
+    title: "welcome_to_akhcheck",
+    content: "onboarding_intro",
     icon: CheckCircle,
   },
   {
     id: 2,
-    title: "Track Your Progress",
-    content: "Check elke dag in: ben je gegooned of heb je gefaald? Maar wees eerlijk – voor jezelf én voor Allah.",
+    title: "track_your_progress",
+    content: "onboarding_tracking",
     icon: Target,
   },
   {
     id: 3,
-    title: "Let's Add Some Friends!",
-    content: "Motivatie is sterker met je broeders. Voeg vrienden toe die je vertrouwt.",
-    warning: "⚠️ Deel nooit zonden met zomaar iemand.",
-    hadith: "De Profeet ﷺ zei: 'Iedereen uit mijn ummah zal worden vergeven, behalve degenen die hun zonden openlijk bekennen.' (Bukhari 6069)",
+    title: "add_some_friends",
+    content: "onboarding_friends",
+    warning: "onboarding_warning",
+    hadith: "onboarding_hadith",
     icon: Users,
     hasAction: true,
   },
   {
     id: 4,
-    title: "Set Goals, Get Reminders",
-    content: "Kies jouw dagelijkse doelen. Ontvang ayah's uit de Koran als motivatie. Allah helpt de volhouders.",
+    title: "set_goals_get_reminders",
+    content: "onboarding_goals",
     icon: BookOpen,
   },
   {
     id: 5,
-    title: "You're ready, Akhi 😤",
-    content: "Ga de uitdaging aan. Elke dag is een nieuwe kans om beter te worden.",
+    title: "youre_ready_akhi",
+    content: "onboarding_ready",
     icon: CheckCircle,
     isLast: true,
   },
@@ -46,6 +48,7 @@ export const Onboarding = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
   const { updateProfile } = useUserData();
+  const { t } = useTranslation();
 
   const currentSlideData = onboardingSlides[currentSlide];
 
@@ -97,21 +100,21 @@ export const Onboarding = () => {
           {/* Content */}
           <div className="space-y-8 mb-10 animate-slide-in-right">
             <h2 className="text-3xl font-bold text-foreground leading-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-              {currentSlideData.title}
+              {t(currentSlideData.title)}
             </h2>
             
             <p className="text-muted-foreground leading-relaxed text-lg">
-              {currentSlideData.content}
+              {t(currentSlideData.content)}
             </p>
 
             {currentSlideData.warning && (
               <div className="glass-card border border-warning/30 rounded-3xl p-6 space-y-4 glow-primary">
                 <p className="text-warning text-base font-semibold">
-                  {currentSlideData.warning}
+                  {t(currentSlideData.warning)}
                 </p>
                 {currentSlideData.hadith && (
                   <p className="text-sm text-muted-foreground italic leading-relaxed">
-                    {currentSlideData.hadith}
+                    {t(currentSlideData.hadith)}
                   </p>
                 )}
               </div>
@@ -126,14 +129,14 @@ export const Onboarding = () => {
                   onClick={handleAddFriend} 
                   className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient glow-primary hover-lift animate-spring"
                 >
-                  Vriend toevoegen
+                  {t('add_friend')}
                 </Button>
                 <Button 
                   onClick={handleNext} 
                   variant="outline" 
                   className="w-full h-16 rounded-3xl border-2 glass-card text-lg font-medium hover-lift animate-smooth"
                 >
-                  Ik begrijp het
+                  {t('i_understand')}
                 </Button>
               </div>
             ) : currentSlideData.isLast ? (
@@ -142,7 +145,7 @@ export const Onboarding = () => {
                 className="w-full h-18 rounded-3xl text-lg font-semibold modern-gradient glow-primary hover-lift animate-bounce-custom"
                 size="lg"
               >
-                Enter the App
+                {t('enter_the_app')}
                 <ArrowRight className="w-6 h-6 ml-3" />
               </Button>
             ) : (
@@ -150,7 +153,7 @@ export const Onboarding = () => {
                 onClick={handleNext} 
                 className="w-full h-16 rounded-3xl text-lg font-semibold modern-gradient glow-primary hover-lift animate-spring"
               >
-                Next
+                {t('next')}
                 <ArrowRight className="w-6 h-6 ml-3" />
               </Button>
             )}
